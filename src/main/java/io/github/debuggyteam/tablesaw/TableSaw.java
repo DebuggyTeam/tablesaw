@@ -1,8 +1,6 @@
 package io.github.debuggyteam.tablesaw;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.Material;
-import net.minecraft.block.StonecutterBlock;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Identifier;
@@ -20,7 +18,7 @@ public class TableSaw implements ModInitializer {
     // That way, it's clear which mod wrote info, warnings, and errors.
     public static final Logger LOGGER = LoggerFactory.getLogger("TableSaw");
 
-    public static final StonecutterBlock TABLESAW = new StonecutterBlock(QuiltBlockSettings.of(Material.WOOD).nonOpaque());
+    public static final TableSawBlock TABLESAW = new TableSawBlock(QuiltBlockSettings.of(Material.WOOD).nonOpaque());
 
     @Override
     public void onInitialize(ModContainer mod) {

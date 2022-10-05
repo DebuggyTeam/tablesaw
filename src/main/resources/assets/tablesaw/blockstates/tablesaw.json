@@ -1,0 +1,19 @@
+{
+	"variants": {
+		"facing=east": {
+			"model": "tablesaw:block/tablesaw",
+			"y": 90
+		},
+		"facing=north": {
+			"model": "tablesaw:block/tablesaw"
+		},
+		"facing=south": {
+			"model": "tablesaw:block/tablesaw",
+			"y": 180
+		},
+		"facing=west": {
+			"model": "tablesaw:block/tablesaw",
+			"y": 270
+		}
+	}
+}

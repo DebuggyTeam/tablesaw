@@ -1,8 +1,12 @@
 package io.github.debuggyteam.tablesaw;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ScreenHandlerContext;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.quiltmc.loader.api.ModContainer;
@@ -19,13 +23,18 @@ public class TableSaw implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("TableSaw");
 
     public static final TableSawBlock TABLESAW = new TableSawBlock(QuiltBlockSettings.of(Material.WOOD).nonOpaque());
+    public static final ScreenHandlerType<TableSawScreenHandler> TABLESAW_SCREEN_HANDLER = new ScreenHandlerType<>((syncId, inventory) -> new TableSawScreenHandler(syncId, inventory, ScreenHandlerContext.EMPTY));
 
     @Override
     public void onInitialize(ModContainer mod) {
         LOGGER.info("Hello Quilt world from {}!", mod.metadata().name());
 
+        Registry.register(Registry.SCREEN_HANDLER, new Identifier("tablesaw", "tablesaw"), TABLESAW_SCREEN_HANDLER);
+        
         Registry.register(Registry.BLOCK, new Identifier("tablesaw", "tablesaw"), TABLESAW);
         Registry.register(Registry.ITEM, new Identifier("tablesaw", "tablesaw"),
                 new BlockItem(TABLESAW, new QuiltItemSettings().group(ItemGroup.DECORATIONS)));
+        
+        TableSawRecipes.serverInstance().registerRecipe(Blocks.OAK_PLANKS, new ItemStack(Blocks.OAK_STAIRS));
     }
 }

@@ -1,6 +1,7 @@
 package io.github.debuggyteam.tablesaw;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
@@ -54,5 +55,13 @@ public class TableSawRecipes {
 		}
 		
 		return item;
+	}
+	
+	@Deprecated
+	public void copyFrom(TableSawRecipes other) {
+		recipes.clear();
+		for(Map.Entry<ItemConvertible, ItemStack> entry : other.recipes.entries()) {
+			recipes.put(entry.getKey(), entry.getValue());
+		}
 	}
 }

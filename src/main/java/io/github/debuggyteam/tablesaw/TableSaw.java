@@ -36,5 +36,18 @@ public class TableSaw implements ModInitializer {
                 new BlockItem(TABLESAW, new QuiltItemSettings().group(ItemGroup.DECORATIONS)));
         
         TableSawRecipes.serverInstance().registerRecipe(Blocks.OAK_PLANKS, new ItemStack(Blocks.OAK_STAIRS));
+        TableSawRecipes.serverInstance().registerRecipe(Blocks.OAK_PLANKS, new ItemStack(Blocks.OAK_FENCE));
+        TableSawRecipes.serverInstance().registerRecipe(Blocks.OAK_PLANKS, new ItemStack(Blocks.OAK_DOOR));
+        TableSawRecipes.serverInstance().registerRecipe(Blocks.OAK_PLANKS, new ItemStack(Blocks.OAK_BUTTON));
+        TableSawRecipes.serverInstance().registerRecipe(Blocks.OAK_PLANKS, new ItemStack(Blocks.OAK_FENCE_GATE));
+        TableSawRecipes.serverInstance().registerRecipe(Blocks.OAK_PLANKS, new ItemStack(Blocks.OAK_PRESSURE_PLATE));
+        TableSawRecipes.serverInstance().registerRecipe(Blocks.OAK_PLANKS, new ItemStack(Blocks.OAK_SIGN));
+        TableSawRecipes.serverInstance().registerRecipe(Blocks.OAK_PLANKS, new ItemStack(Blocks.OAK_SLAB));
+        TableSawRecipes.serverInstance().registerRecipe(Blocks.OAK_PLANKS, new ItemStack(Blocks.OAK_TRAPDOOR));
+        //Silly blocks to force the recipes to scroll
+        TableSawRecipes.serverInstance().registerRecipe(Blocks.OAK_PLANKS, new ItemStack(Blocks.BARREL));
+        TableSawRecipes.serverInstance().registerRecipe(Blocks.OAK_PLANKS, new ItemStack(Blocks.COMPOSTER));
+        TableSawRecipes.serverInstance().registerRecipe(Blocks.OAK_PLANKS, new ItemStack(Blocks.BEEHIVE));
+        TableSawRecipes.serverInstance().registerRecipe(Blocks.OAK_PLANKS, new ItemStack(Blocks.CHEST));
     }
 }

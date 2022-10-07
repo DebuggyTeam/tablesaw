@@ -3,36 +3,71 @@ package io.github.debuggyteam.tablesaw;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CuttingRecipe;
-import net.minecraft.recipe.StonecuttingRecipe;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class TableSawScreenHandler extends ScreenHandler {
+	public static final int INPUT_SLOT = 0;
+	public static final int OUTPUT_SLOT = 1;
+	
 	private static final double MAX_SQUARED_REACH = 6 * 6;
 	
 	private List<CuttingRecipe> availableRecipes = new ArrayList<>();
-	private ItemStack inputStack = ItemStack.EMPTY;
+	private ScreenHandlerContext context;
 	private World world;
 	private BlockPos pos;
-	
-	protected TableSawScreenHandler(int syncId) {
-		super(TableSaw.TABLESAW_SCREEN_HANDLER, syncId);
-	}
+	//private Slot inputSlot;
+	//private Slot outputSlot;
+	private Runnable listenerScreen = ()->{};
+	public final Inventory input = new SimpleInventory(1) {
+		@Override
+		public void markDirty() {
+			super.markDirty();
+			onContentChanged(this);
+		}
+	};
+	public final Inventory output = new SimpleInventory(1) {
+		@Override
+		public void markDirty() {
+			super.markDirty();
+			onContentChanged(this);
+		}
+		
+		public boolean canInsert(ItemStack stack) { return false; };
+	};
 
 	public TableSawScreenHandler(int syncId, PlayerInventory inventory, ScreenHandlerContext context) {
 		super(TableSaw.TABLESAW_SCREEN_HANDLER, syncId);
+		this.context = context;
 		context.run((world, pos)->{
 			this.world = world;
 			this.pos = pos;
 		});
+		
+		//this.inputSlot = 
+				this.addSlot(new Slot(this.input, 0, 20, 33));
+		//this.outputSlot = 
+				this.addSlot(new Slot(this.output, 0, 143, 33));
+		
+		int inventoryWidth = 9;
+		for(int yi = 0; yi < 3; ++yi) {
+			for(int xi = 0; xi < inventoryWidth; ++xi) {
+				this.addSlot(new Slot(inventory, xi + yi * inventoryWidth + inventoryWidth, 8 + xi * 18, 84 + yi * 18));
+			}
+		}
+
+		for(int xi = 0; xi < inventoryWidth; ++xi) {
+			this.addSlot(new Slot(inventory, xi, 8 + xi * 18, 142));
+		}
 	}
 
 	@Override
@@ -51,21 +86,21 @@ public class TableSawScreenHandler extends ScreenHandler {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 	
-	public int getSelectedRecipe() {
-		return 0; //this.selectedRecipe.get();
+	public void setListenerScreen(Runnable listener) {
+		this.listenerScreen = listener;
 	}
-
-	public List<StonecuttingRecipe> getAvailableRecipes() {
-		return ImmutableList.of(); //this.availableRecipes;
+	
+	@Override
+	public void onContentChanged(Inventory inventory) {
+		super.onContentChanged(inventory);
+		listenerScreen.run();
 	}
-
-	public int getAvailableRecipeCount() {
-		return this.availableRecipes.size();
-	}
-
-	public boolean canCraft() {
-		return false; //return this.inputSlot.hasStack() && !this.availableRecipes.isEmpty();
+	
+	@Override
+	public void close(PlayerEntity player) {
+		super.close(player);
+		this.output.removeStack(0);
+		this.context.run((world, pos) -> this.dropInventory(player, this.input));
 	}
 }

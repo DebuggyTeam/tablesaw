@@ -11,7 +11,10 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.recipe.StonecuttingRecipe;
+import net.minecraft.screen.slot.Slot;
+import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -20,8 +23,7 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	
 	private static final Identifier TEXTURE = new Identifier("minecraft:textures/gui/container/stonecutter.png");
 	
-	private static final int RECIPE_GRID_X = 52;
-	private static final int RECIPE_GRID_Y = 14;
+	
 	
 	private static final int RECIPE_SLOT_Y = 166;
 	private static final int INSET_RECIPE_SLOT_Y = 184;
@@ -29,19 +31,28 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	private static final int RECIPE_SLOT_WIDTH = 16;
 	private static final int RECIPE_SLOT_HEIGHT = 18;
 	
+	private static final int RECIPE_GRID_X = 52;
+	private static final int RECIPE_GRID_Y = 14;
+	private static final int RECIPE_GRID_WIDTH = RECIPE_SLOT_WIDTH*4;
+	private static final int RECIPE_GRID_HEIGHT = RECIPE_SLOT_HEIGHT*3;
+	
 	private static final int SCROLLBAR_START_X = 119;
 	private static final int SCROLLBAR_START_Y = 15;
 	private static final int SCROLLBAR_WIDTH = 12;
 	private static final int SCROLLBAR_HEIGHT = 54;
 	
-	private static final int SCROLLBAR_THUMB_X = 176;
 	private static final int SCROLLBAR_THUMB_WIDTH = 12;
 	private static final int SCROLLBAR_THUMB_HEIGHT = 15;
+	private static final int SCROLLBAR_THUMB_X = 176;
+	private static final int DISABLED_SCROLLBAR_THUMB_X = 176 + SCROLLBAR_THUMB_WIDTH;
+	
 	
 	private float scrollAmount;
 	private boolean mouseClicked;
 	private int scrollOffset;
 	private boolean canCraft;
+	private int selectedSlot = -1;
+	private ItemStack selectedItem = ItemStack.EMPTY;
 	
 	public TableSawScreen(TableSawScreenHandler screenHandler, PlayerInventory playerInventory, Text text) {
 		super(screenHandler, playerInventory, text);
@@ -70,12 +81,50 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	}
 	
 	public void onContentsChanged() {
-		//TODO: Cache recipe list
+		if (selectedSlot!=-1) {
+			List<ItemStack> list = getClientsideRecipes();
+			if (selectedSlot>=list.size()) {
+				selectedSlot = -1;
+				selectedItem = ItemStack.EMPTY;
+				return;
+			} else if (ItemStack.areEqual(selectedItem, list.get(selectedSlot))) {
+				//Do not reset the stack
+			} else {
+				selectedSlot = -1;
+				selectedItem = ItemStack.EMPTY;
+				return;
+			}
+		}
+		//TODO: Cache recipe list?
+	}
+	
+	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		int recipeX = x+RECIPE_GRID_X;
+		int recipeY = y+RECIPE_GRID_Y+1;
+		
+		if (mouseX>= recipeX && mouseY>=recipeY) {
+			if (mouseX<recipeX+RECIPE_GRID_WIDTH && mouseY<recipeY+RECIPE_GRID_HEIGHT) {
+				int gridX = ((int)mouseX - recipeX) / RECIPE_SLOT_WIDTH;
+				int gridY = ((int)mouseY - recipeY) / RECIPE_SLOT_HEIGHT;
+				if (gridX>=0 || gridY>=0 || gridX<4 || gridY<3) {
+					int clickedSlot = (scrollOffset*4) + (gridY*4) + gridX;
+					
+					List<ItemStack> list = getClientsideRecipes();
+					if (clickedSlot<list.size()) {
+						selectedSlot = clickedSlot;
+						selectedItem = list.get(selectedSlot);
+					}
+				}
+			}
+		}
+		
+		return super.mouseClicked(mouseX, mouseY, button);
 	}
 	
 	private void renderRecipeBackground(MatrixStack matrices, int mouseX, int mouseY, int x, int y, int scrollOffset) {
-		int recipeCount = recipeCount();
-		if (recipeCount==0) return;
+		List<ItemStack> list = getClientsideRecipes();
+		if (list.size()==0) return;
 		
 		int curSlot = 0;
 		
@@ -87,14 +136,19 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 				int slotY = y+(yi*RECIPE_SLOT_HEIGHT)+1;
 				
 				int imageY = RECIPE_SLOT_Y;
-				if (mouseX>=slotX && mouseY>=slotY && mouseX<slotX+RECIPE_SLOT_WIDTH && mouseY<slotY+RECIPE_SLOT_HEIGHT) {
-					imageY = HOVERED_RECIPE_SLOT_Y;
+				
+				if (ItemStack.areEqual(selectedItem, list.get(curSlot))) {
+					imageY = INSET_RECIPE_SLOT_Y;
+				} else {
+					if (mouseX>=slotX && mouseY>=slotY && mouseX<slotX+RECIPE_SLOT_WIDTH && mouseY<slotY+RECIPE_SLOT_HEIGHT) {
+						imageY = HOVERED_RECIPE_SLOT_Y;
+					}
 				}
 				
 				this.drawTexture(matrices, slotX, slotY, 0, imageY, RECIPE_SLOT_WIDTH, RECIPE_SLOT_HEIGHT);
 				
 				curSlot++;
-				if (curSlot>=recipeCount) break loop;
+				if (curSlot>=list.size()) break loop;
 			}
 		}
 	}

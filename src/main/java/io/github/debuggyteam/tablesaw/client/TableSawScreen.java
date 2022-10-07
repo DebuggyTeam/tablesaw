@@ -23,8 +23,20 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	private static final int RECIPE_GRID_X = 52;
 	private static final int RECIPE_GRID_Y = 14;
 	
-	private static final int RECIPE_SLOT = 166;
-	private static final int INSET_RECIPE_SLOT = 184;
+	private static final int RECIPE_SLOT_Y = 166;
+	private static final int INSET_RECIPE_SLOT_Y = 184;
+	private static final int HOVERED_RECIPE_SLOT_Y = 202;
+	private static final int RECIPE_SLOT_WIDTH = 16;
+	private static final int RECIPE_SLOT_HEIGHT = 18;
+	
+	private static final int SCROLLBAR_START_X = 119;
+	private static final int SCROLLBAR_START_Y = 15;
+	private static final int SCROLLBAR_WIDTH = 12;
+	private static final int SCROLLBAR_HEIGHT = 54;
+	
+	private static final int SCROLLBAR_THUMB_X = 176;
+	private static final int SCROLLBAR_THUMB_WIDTH = 12;
+	private static final int SCROLLBAR_THUMB_HEIGHT = 15;
 	
 	private float scrollAmount;
 	private boolean mouseClicked;
@@ -33,6 +45,7 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	
 	public TableSawScreen(TableSawScreenHandler screenHandler, PlayerInventory playerInventory, Text text) {
 		super(screenHandler, playerInventory, text);
+		screenHandler.setListenerScreen(this::onContentsChanged);
 	}
 
 	@Override
@@ -56,6 +69,10 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 		this.renderRecipeIcons(x + RECIPE_GRID_X, y + RECIPE_GRID_Y, this.scrollOffset);
 	}
 	
+	public void onContentsChanged() {
+		//TODO: Cache recipe list
+	}
+	
 	private void renderRecipeBackground(MatrixStack matrices, int mouseX, int mouseY, int x, int y, int scrollOffset) {
 		int recipeCount = recipeCount();
 		if (recipeCount==0) return;
@@ -66,7 +83,15 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 		for(int yi=0; yi<3; yi++) {
 			for(int xi=0; xi<4; xi++) {
 				//TODO: Decide which texture this slot has, e.g. selected, hovered
-				this.drawTexture(matrices, x+(xi*16), y+(yi*18)+1, 0, RECIPE_SLOT, 16, 18);
+				int slotX = x+(xi*RECIPE_SLOT_WIDTH);
+				int slotY = y+(yi*RECIPE_SLOT_HEIGHT)+1;
+				
+				int imageY = RECIPE_SLOT_Y;
+				if (mouseX>=slotX && mouseY>=slotY && mouseX<slotX+RECIPE_SLOT_WIDTH && mouseY<slotY+RECIPE_SLOT_HEIGHT) {
+					imageY = HOVERED_RECIPE_SLOT_Y;
+				}
+				
+				this.drawTexture(matrices, slotX, slotY, 0, imageY, RECIPE_SLOT_WIDTH, RECIPE_SLOT_HEIGHT);
 				
 				curSlot++;
 				if (curSlot>=recipeCount) break loop;
@@ -83,7 +108,7 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 		loop:
 		for(int yi=0; yi<3; yi++) {
 			for(int xi=0; xi<4; xi++) {
-				this.client.getItemRenderer().renderInGuiWithOverrides(list.get(curSlot), x+(xi*16), y+(yi*18)+2);
+				this.client.getItemRenderer().renderInGuiWithOverrides(list.get(curSlot), x+(xi*RECIPE_SLOT_WIDTH), y+(yi*RECIPE_SLOT_HEIGHT)+2);
 				
 				curSlot++;
 				if (curSlot>=list.size()) break loop;
@@ -133,4 +158,6 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 		
 		return baseScroll;
 	}
+	
+	
 }

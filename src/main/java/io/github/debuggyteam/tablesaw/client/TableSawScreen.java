@@ -6,8 +6,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import io.github.debuggyteam.tablesaw.TableSawRecipes;
 import io.github.debuggyteam.tablesaw.TableSawScreenHandler;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -15,8 +17,10 @@ import net.minecraft.item.Items;
 import net.minecraft.recipe.StonecuttingRecipe;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 
 public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	
@@ -36,8 +40,8 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	private static final int RECIPE_GRID_WIDTH = RECIPE_SLOT_WIDTH*4;
 	private static final int RECIPE_GRID_HEIGHT = RECIPE_SLOT_HEIGHT*3;
 	
-	private static final int SCROLLBAR_START_X = 119;
-	private static final int SCROLLBAR_START_Y = 15;
+	private static final int SCROLLBAR_X = 119;
+	private static final int SCROLLBAR_Y = 15;
 	private static final int SCROLLBAR_WIDTH = 12;
 	private static final int SCROLLBAR_HEIGHT = 54;
 	
@@ -48,7 +52,7 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	
 	
 	private float scrollAmount;
-	private boolean mouseClicked;
+	private boolean scrollBarClicked;
 	private int scrollOffset;
 	private boolean canCraft;
 	private int selectedSlot = -1;
@@ -73,8 +77,9 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		this.drawTexture(matrices, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight);
 		
-		int scrollBarOffset = (int) (41 * this.scrollAmount);
-		this.drawTexture(matrices, x + 119, y + 15 + scrollBarOffset, 176 + (this.shouldScroll() ? 0 : 12), 0, 12, 15);
+		int scrollBarOffset = (int) ((SCROLLBAR_HEIGHT-SCROLLBAR_THUMB_HEIGHT) * this.scrollAmount);
+		int scrollThumbImageX = (shouldScroll()) ? SCROLLBAR_THUMB_X : DISABLED_SCROLLBAR_THUMB_X;
+		this.drawTexture(matrices, x + SCROLLBAR_X, y + SCROLLBAR_Y + scrollBarOffset, scrollThumbImageX, 0, SCROLLBAR_THUMB_WIDTH, SCROLLBAR_THUMB_HEIGHT);
 		
 		this.renderRecipeBackground(matrices, mouseX, mouseY, this.x + RECIPE_GRID_X, this.y + RECIPE_GRID_Y, this.scrollOffset);
 		this.renderRecipeIcons(x + RECIPE_GRID_X, y + RECIPE_GRID_Y, this.scrollOffset);
@@ -100,6 +105,8 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		scrollBarClicked = false;
+		
 		int recipeX = x+RECIPE_GRID_X;
 		int recipeY = y+RECIPE_GRID_Y+1;
 		
@@ -114,19 +121,52 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 					if (clickedSlot<list.size()) {
 						selectedSlot = clickedSlot;
 						selectedItem = list.get(selectedSlot);
+						
+						MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
+						return true;
 					}
 				}
 			}
 		}
 		
+		if (mouseX>=x+SCROLLBAR_X && mouseY>=y+SCROLLBAR_Y && mouseX<x+SCROLLBAR_X+SCROLLBAR_WIDTH && mouseY<y+SCROLLBAR_Y+SCROLLBAR_HEIGHT) {
+			this.scrollBarClicked = true;
+		}
+		
 		return super.mouseClicked(mouseX, mouseY, button);
+	}
+	
+	@Override
+	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+		if (this.scrollBarClicked) {
+			int start = y+SCROLLBAR_Y;
+			int trackHeight = SCROLLBAR_HEIGHT - SCROLLBAR_THUMB_HEIGHT;
+			this.scrollAmount = ((float)mouseY - start - (SCROLLBAR_THUMB_HEIGHT/2.0f)) / (float) trackHeight;
+			this.scrollAmount = MathHelper.clamp(this.scrollAmount, 0.0F, 1.0F);
+			this.scrollOffset = (int) (scrollAmount * getMaxScroll() + 0.5f);
+			return true;
+		} else {
+			return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+		}
+	}
+	
+	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+		if (this.shouldScroll()) {
+			int maxScroll = this.getMaxScroll();
+			float scrollDelta = (float)amount / (float)maxScroll;
+			this.scrollAmount = MathHelper.clamp(this.scrollAmount - scrollDelta, 0.0F, 1.0F);
+			this.scrollOffset = (int) (scrollAmount * maxScroll + 0.5f);
+		}
+
+		return true;
 	}
 	
 	private void renderRecipeBackground(MatrixStack matrices, int mouseX, int mouseY, int x, int y, int scrollOffset) {
 		List<ItemStack> list = getClientsideRecipes();
 		if (list.size()==0) return;
 		
-		int curSlot = 0;
+		int curSlot = scrollOffset*4;
 		
 		loop:
 		for(int yi=0; yi<3; yi++) {
@@ -157,7 +197,7 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 		List<ItemStack> list = getClientsideRecipes();
 		if (list.size()==0) return;
 		
-		int curSlot = 0;
+		int curSlot = scrollOffset*4;
 		
 		loop:
 		for(int yi=0; yi<3; yi++) {
@@ -208,7 +248,7 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 
 	protected int getMaxScroll() {
 		int baseScroll = (int) Math.ceil(recipeCount() / 4.0); // one scroll increment per line of 4 recipes...
-		baseScroll -= 12; if (baseScroll<0) baseScroll = 0;    // ...minus the first screen.
+		baseScroll -= 3; if (baseScroll<0) baseScroll = 0;    // ...minus the first screen.
 		
 		return baseScroll;
 	}

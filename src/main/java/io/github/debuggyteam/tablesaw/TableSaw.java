@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TableSaw implements ModInitializer {
+	public static final String MODID = "tablesaw";
     // This logger is used to write text to the console and the log file.
     // It is considered best practice to use your mod name as the logger's name.
     // That way, it's clear which mod wrote info, warnings, and errors.
@@ -29,10 +30,10 @@ public class TableSaw implements ModInitializer {
     public void onInitialize(ModContainer mod) {
         LOGGER.info("Hello Quilt world from {}!", mod.metadata().name());
 
-        Registry.register(Registry.SCREEN_HANDLER, new Identifier("tablesaw", "tablesaw"), TABLESAW_SCREEN_HANDLER);
+        Registry.register(Registry.SCREEN_HANDLER, new Identifier(MODID, "tablesaw"), TABLESAW_SCREEN_HANDLER);
         
-        Registry.register(Registry.BLOCK, new Identifier("tablesaw", "tablesaw"), TABLESAW);
-        Registry.register(Registry.ITEM, new Identifier("tablesaw", "tablesaw"),
+        Registry.register(Registry.BLOCK, new Identifier(MODID, "tablesaw"), TABLESAW);
+        Registry.register(Registry.ITEM, new Identifier(MODID, "tablesaw"),
                 new BlockItem(TABLESAW, new QuiltItemSettings().group(ItemGroup.DECORATIONS)));
         
         TableSawRecipes.serverInstance().registerRecipe(Blocks.OAK_PLANKS, new ItemStack(Blocks.OAK_STAIRS));

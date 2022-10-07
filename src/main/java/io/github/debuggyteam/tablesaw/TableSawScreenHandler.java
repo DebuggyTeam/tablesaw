@@ -1,14 +1,10 @@
 package io.github.debuggyteam.tablesaw;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.CuttingRecipe;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
@@ -21,12 +17,9 @@ public class TableSawScreenHandler extends ScreenHandler {
 	
 	private static final double MAX_SQUARED_REACH = 6 * 6;
 	
-	private List<CuttingRecipe> availableRecipes = new ArrayList<>();
 	private ScreenHandlerContext context;
 	private World world;
 	private BlockPos pos;
-	//private Slot inputSlot;
-	//private Slot outputSlot;
 	private Runnable listenerScreen = ()->{};
 	public final Inventory input = new SimpleInventory(1) {
 		@Override

@@ -19,7 +19,8 @@
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
-			"init": "io.github.debuggyteam.tablesaw.TableSaw"
+			"init": "io.github.debuggyteam.tablesaw.TableSaw",
+			"client_init": "io.github.debuggyteam.tablesaw.client.TableSawClient"
 		},
 		"depends": [
 			{

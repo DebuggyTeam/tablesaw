@@ -20,7 +20,7 @@ public class TableSawScreenHandler extends ScreenHandler {
 	private ScreenHandlerContext context;
 	private World world;
 	private BlockPos pos;
-	private Runnable listenerScreen = ()->{};
+	private Runnable listenerScreen = () -> {};
 	public final Inventory input = new SimpleInventory(1) {
 		@Override
 		public void markDirty() {

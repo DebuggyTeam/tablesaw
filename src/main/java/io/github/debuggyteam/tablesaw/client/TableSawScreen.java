@@ -69,8 +69,8 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	protected void init() {
 		super.init();
 		
-		this.addDrawableChild(new TexturedButtonWidget(x+SAW_BUTTON_X, y+SAW_BUTTON_Y, SAW_BUTTON_WIDTH, SAW_BUTTON_HEIGHT, SAW_BUTTON_U, SAW_BUTTON_V, 16, BUTTON_TEXTURE, 16, 32,
-				(button)->{
+		this.addDrawableChild(new TexturedButtonWidget(x + SAW_BUTTON_X, y + SAW_BUTTON_Y, SAW_BUTTON_WIDTH, SAW_BUTTON_HEIGHT, SAW_BUTTON_U, SAW_BUTTON_V, 16, BUTTON_TEXTURE, 16, 32,
+				(button) -> {
 					System.out.println("Foo");
 				}));
 	}
@@ -99,9 +99,9 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	}
 	
 	public void onContentsChanged() {
-		if (selectedSlot!=-1) {
+		if (selectedSlot != -1) {
 			List<ItemStack> list = getClientsideRecipes();
-			if (selectedSlot>=list.size()) {
+			if (selectedSlot >= list.size()) {
 				selectedSlot = -1;
 				selectedItem = ItemStack.EMPTY;
 				scrollAmount = 0f;
@@ -204,14 +204,14 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 				this.drawTexture(matrices, slotX, slotY, 0, imageY, RECIPE_SLOT_WIDTH, RECIPE_SLOT_HEIGHT);
 				
 				curSlot++;
-				if (curSlot>=list.size()) break loop;
+				if (curSlot >= list.size()) break loop;
 			}
 		}
 	}
 	
 	private void renderRecipeIcons(int x, int y, int scrollOffset) {
 		List<ItemStack> list = getClientsideRecipes();
-		if (list.size()==0) return;
+		if (list.size() == 0) return;
 		
 		int curSlot = scrollOffset*4;
 		
@@ -231,8 +231,8 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	protected void drawMouseoverTooltip(MatrixStack matrices, int x, int y) {
 		super.drawMouseoverTooltip(matrices, x, y);
 		
-		int recipeX = this.x+RECIPE_GRID_X;
-		int recipeY = this.y+RECIPE_GRID_Y+1;
+		int recipeX = this.x + RECIPE_GRID_X;
+		int recipeY = this.y + RECIPE_GRID_Y + 1;
 		
 		if (x >= recipeX && y >= recipeY) {
 			if (x < recipeX + RECIPE_GRID_WIDTH && y < recipeY + RECIPE_GRID_HEIGHT) {

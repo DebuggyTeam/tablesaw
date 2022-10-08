@@ -124,18 +124,18 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		scrollBarClicked = false;
 		
-		int recipeX = x+RECIPE_GRID_X;
-		int recipeY = y+RECIPE_GRID_Y+1;
+		int recipeX = x + RECIPE_GRID_X;
+		int recipeY = y + RECIPE_GRID_Y + 1;
 		
-		if (mouseX>= recipeX && mouseY>=recipeY) {
-			if (mouseX<recipeX+RECIPE_GRID_WIDTH && mouseY<recipeY+RECIPE_GRID_HEIGHT) {
-				int gridX = ((int)mouseX - recipeX) / RECIPE_SLOT_WIDTH;
-				int gridY = ((int)mouseY - recipeY) / RECIPE_SLOT_HEIGHT;
-				if (gridX>=0 || gridY>=0 || gridX<4 || gridY<3) {
-					int clickedSlot = (scrollOffset*4) + (gridY*4) + gridX;
+		if (mouseX >= recipeX && mouseY >= recipeY) {
+			if (mouseX < recipeX + RECIPE_GRID_WIDTH && mouseY < recipeY + RECIPE_GRID_HEIGHT) {
+				int gridX = ((int) mouseX - recipeX) / RECIPE_SLOT_WIDTH;
+				int gridY = ((int) mouseY - recipeY) / RECIPE_SLOT_HEIGHT;
+				if (gridX >= 0 || gridY >= 0 || gridX < 4 || gridY < 3) {
+					int clickedSlot = (scrollOffset * 4) + (gridY * 4) + gridX;
 					
 					List<ItemStack> list = getClientsideRecipes();
-					if (clickedSlot<list.size()) {
+					if (clickedSlot < list.size()) {
 						selectedSlot = clickedSlot;
 						selectedItem = list.get(selectedSlot);
 						
@@ -146,7 +146,7 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 			}
 		}
 		
-		if (shouldScroll() && mouseX>=x+SCROLLBAR_X && mouseY>=y+SCROLLBAR_Y && mouseX<x+SCROLLBAR_X+SCROLLBAR_WIDTH && mouseY<y+SCROLLBAR_Y+SCROLLBAR_HEIGHT) {
+		if (shouldScroll() && mouseX >= x + SCROLLBAR_X && mouseY >= y + SCROLLBAR_Y && mouseX < x + SCROLLBAR_X + SCROLLBAR_WIDTH && mouseY < y + SCROLLBAR_Y + SCROLLBAR_HEIGHT) {
 			this.scrollBarClicked = true;
 		}
 		
@@ -156,9 +156,9 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
 		if (this.scrollBarClicked && shouldScroll()) {
-			int start = y+SCROLLBAR_Y;
+			int start = y + SCROLLBAR_Y;
 			int trackHeight = SCROLLBAR_HEIGHT - SCROLLBAR_THUMB_HEIGHT;
-			this.scrollAmount = ((float)mouseY - start - (SCROLLBAR_THUMB_HEIGHT/2.0f)) / (float) trackHeight;
+			this.scrollAmount = ((float) mouseY - start - (SCROLLBAR_THUMB_HEIGHT / 2.0f)) / (float) trackHeight;
 			this.scrollAmount = MathHelper.clamp(this.scrollAmount, 0.0F, 1.0F);
 			this.scrollOffset = (int) (scrollAmount * getMaxScroll() + 0.5f);
 			return true;
@@ -186,17 +186,17 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 		int curSlot = scrollOffset*4;
 		
 		loop:
-		for(int yi=0; yi<3; yi++) {
-			for(int xi=0; xi<4; xi++) {
-				int slotX = x+(xi*RECIPE_SLOT_WIDTH);
-				int slotY = y+(yi*RECIPE_SLOT_HEIGHT)+1;
+		for(int yi = 0; yi < 3; yi++) {
+			for(int xi = 0; xi < 4; xi++) {
+				int slotX = x + (xi * RECIPE_SLOT_WIDTH);
+				int slotY = y + (yi * RECIPE_SLOT_HEIGHT) + 1;
 				
 				int imageY = RECIPE_SLOT_Y;
 				
 				if (ItemStack.areEqual(selectedItem, list.get(curSlot))) {
 					imageY = INSET_RECIPE_SLOT_Y;
 				} else {
-					if (mouseX>=slotX && mouseY>=slotY && mouseX<slotX+RECIPE_SLOT_WIDTH && mouseY<slotY+RECIPE_SLOT_HEIGHT) {
+					if (mouseX >= slotX && mouseY >= slotY && mouseX < slotX + RECIPE_SLOT_WIDTH && mouseY < slotY + RECIPE_SLOT_HEIGHT) {
 						imageY = HOVERED_RECIPE_SLOT_Y;
 					}
 				}
@@ -216,12 +216,12 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 		int curSlot = scrollOffset*4;
 		
 		loop:
-		for(int yi=0; yi<3; yi++) {
-			for(int xi=0; xi<4; xi++) {
-				this.client.getItemRenderer().renderInGuiWithOverrides(list.get(curSlot), x+(xi*RECIPE_SLOT_WIDTH), y+(yi*RECIPE_SLOT_HEIGHT)+2);
+		for(int yi = 0; yi < 3; yi++) {
+			for(int xi = 0; xi < 4; xi++) {
+				this.client.getItemRenderer().renderInGuiWithOverrides(list.get(curSlot), x + (xi * RECIPE_SLOT_WIDTH), y + (yi * RECIPE_SLOT_HEIGHT) + 2);
 				
 				curSlot++;
-				if (curSlot>=list.size()) break loop;
+				if (curSlot >= list.size()) break loop;
 			}
 		}
 
@@ -234,14 +234,14 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 		int recipeX = this.x+RECIPE_GRID_X;
 		int recipeY = this.y+RECIPE_GRID_Y+1;
 		
-		if (x>= recipeX && y>=recipeY) {
-			if (x<recipeX+RECIPE_GRID_WIDTH && y<recipeY+RECIPE_GRID_HEIGHT) {
-				int gridX = ((int)x - recipeX) / RECIPE_SLOT_WIDTH;
-				int gridY = ((int)y - recipeY) / RECIPE_SLOT_HEIGHT;
-				if (gridX>=0 || gridY>=0 || gridX<4 || gridY<3) {
-					int hoveredSlot = (scrollOffset*4) + (gridY*4) + gridX;
+		if (x >= recipeX && y >= recipeY) {
+			if (x < recipeX + RECIPE_GRID_WIDTH && y < recipeY + RECIPE_GRID_HEIGHT) {
+				int gridX = ((int) x - recipeX) / RECIPE_SLOT_WIDTH;
+				int gridY = ((int) y - recipeY) / RECIPE_SLOT_HEIGHT;
+				if (gridX >= 0 || gridY >= 0 || gridX < 4 || gridY < 3) {
+					int hoveredSlot = (scrollOffset * 4) + (gridY * 4) + gridX;
 					List<ItemStack> list = this.getClientsideRecipes();
-					if (hoveredSlot>=0 && hoveredSlot<list.size()) {
+					if (hoveredSlot >= 0 && hoveredSlot < list.size()) {
 						renderTooltip(matrices, list.get(hoveredSlot), x, y);
 					}
 				}
@@ -263,7 +263,7 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 
 	protected int getMaxScroll() {
 		int baseScroll = (int) Math.ceil(recipeCount() / 4.0); // one scroll increment per line of 4 recipes...
-		baseScroll -= 3; if (baseScroll<0) baseScroll = 0;    // ...minus the first screen.
+		baseScroll -= 3; if (baseScroll < 0) baseScroll = 0;    // ...minus the first screen.
 		
 		return baseScroll;
 	}

@@ -53,21 +53,21 @@ public class TableSawScreenHandler extends ScreenHandler {
 		
 		int inventoryWidth = 9;
 		for(int yi = 0; yi < 3; ++yi) {
-			for(int xi = 0; xi < inventoryWidth; ++xi) {
+			for(int xi = 0; xi < inventoryWidth; xi++) {
 				this.addSlot(new Slot(inventory, xi + yi * inventoryWidth + inventoryWidth, 8 + xi * 18, 84 + yi * 18));
 			}
 		}
 
-		for(int xi = 0; xi < inventoryWidth; ++xi) {
+		for(int xi = 0; xi < inventoryWidth; xi++) {
 			this.addSlot(new Slot(inventory, xi, 8 + xi * 18, 142));
 		}
 	}
 
 	@Override
 	public boolean canUse(PlayerEntity player) {
-		if (world!=null && pos!=null) {
+		if (world != null && pos != null) {
 			if (!player.getWorld().equals(world)) return false;
-			if (player.getPos().squaredDistanceTo(pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5)>MAX_SQUARED_REACH) return false;
+			if (player.getPos().squaredDistanceTo(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) > MAX_SQUARED_REACH) return false;
 			if (world.getBlockState(pos).isOf(TableSaw.TABLESAW)) return true;
 		}
 		
@@ -78,18 +78,18 @@ public class TableSawScreenHandler extends ScreenHandler {
 	public ItemStack transferSlot(PlayerEntity player, int index) {
 		ItemStack result = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
-		if (slot!=null && slot.hasStack()) {
+		if (slot != null && slot.hasStack()) {
 			ItemStack initial = slot.getStack();
 			result = initial.copy();
-			if (index==0) {
+			if (index == 0) {
 				if (!this.insertItem(result, 2, 38, false)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (index==1) {
+			} else if (index == 1) {
 				if (!this.insertItem(result, 2, 38, false)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (index>=2 && index<29) {
+			} else if (index >= 2 && index < 29) {
 				if (!this.insertItem(result, 29, 38, false)) {
 					return ItemStack.EMPTY;
 				}

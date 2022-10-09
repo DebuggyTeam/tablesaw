@@ -1,6 +1,8 @@
 package io.github.debuggyteam.tablesaw;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 
@@ -72,6 +74,12 @@ public class TableSawRecipes {
 		for(Map.Entry<Item, TableSawRecipe> entry : other.recipes.entries()) {
 			recipes.put(entry.getKey(), entry.getValue());
 		}
+	}
+	
+	public Deque<TableSawRecipe> queueAll() {
+		ArrayDeque<TableSawRecipe> result = new ArrayDeque<>();
+		result.addAll(recipes.values());
+		return result;
 	}
 
 	public void clearRecipesFor(ItemConvertible input) {

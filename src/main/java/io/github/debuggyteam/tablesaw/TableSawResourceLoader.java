@@ -117,9 +117,6 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 				e.printStackTrace();
 			}
 		}
-		
-		//TODO: Remove when sync happens
-		TableSawRecipes.clientInstance().copyFrom(TableSawRecipes.serverInstance());
 	}
 
 	/**

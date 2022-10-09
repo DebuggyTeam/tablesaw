@@ -137,16 +137,14 @@ public class TableSawScreenHandler extends ScreenHandler {
 		List<TableSawRecipe> recipes = TableSawRecipes.serverInstance().getRecipes(this.input.getStack(0).getItem());
 		for(TableSawRecipe recipe : recipes) {
 			if (ItemStack.areEqual(recipe.getResult(), stack)) {
-				//TODO: Do the craft
-				System.out.println("VALID " + ((multiCraft) ? "multicraft" : "craft"));
 				
-				/* TODO: This is going to be a complex interlocking series of steps to verify the input count, that the
+				/* This is a complex interlocking series of steps to verify the input count, that the
 				 * output can fit in the destination slot, and then deduct the inputs, and *then* insert the results.
 				 */
 				
-				int availableQuantity = this.input.getStack(0).getCount();
-				int sourceCraftableQuantity = availableQuantity / recipe.getQuantity();
-				if (sourceCraftableQuantity<=0) return; //We don't have enough input
+				int availableInputQuantity = this.input.getStack(0).getCount();
+				int availableCraftsFromSource = availableInputQuantity / recipe.getQuantity();
+				if (availableCraftsFromSource<=0) return; //We don't have enough input
 				
 				ItemStack destination = this.output.getStack(0);
 				if (!(destination.isEmpty() || ItemStack.canCombine(recipe.getResult(), destination))) {
@@ -158,7 +156,7 @@ public class TableSawScreenHandler extends ScreenHandler {
 				
 				if (destinationCraftableQuantity <= 0) return; //Not enough room in the output slot
 				
-				int toCraft = (multiCraft) ? Math.min(sourceCraftableQuantity, destinationCraftableQuantity) : 1;
+				int toCraft = (multiCraft) ? Math.min(availableCraftsFromSource, destinationCraftableQuantity) : 1;
 				
 				for(int i=0; i<toCraft; i++) {
 					input.removeStack(0, recipe.getQuantity());
@@ -170,7 +168,6 @@ public class TableSawScreenHandler extends ScreenHandler {
 						output.setStack(0, outputStack);
 					}
 				}
-				System.out.println(""+toCraft+" crafts done, totaling "+(toCraft*recipe.getResult().getCount())+" output items.");
 				
 				//Shouldn't be needed but enable if sync gets funky
 				/*

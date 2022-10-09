@@ -74,4 +74,8 @@ public class TableSawRecipes {
 			recipes.put(entry.getKey(), entry.getValue());
 		}
 	}
+
+	public void clearRecipesFor(ItemConvertible input) {
+		recipes.removeAll(input.asItem());
+	}
 }

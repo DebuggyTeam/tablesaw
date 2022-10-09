@@ -49,7 +49,7 @@ public class TableSawRecipes {
 		//Remove any recipes with the same output item
 		List<TableSawRecipe> toRemove = new ArrayList<>();
 		for(TableSawRecipe r : recipes.get(recipe.getInput())) {
-			if (r.getResult().getItem()==recipe.getResult().getItem()) {
+			if (r.getResult().getItem() == recipe.getResult().getItem()) {
 				toRemove.add(r);
 			}
 		}

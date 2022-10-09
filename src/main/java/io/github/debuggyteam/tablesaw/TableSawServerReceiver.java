@@ -13,12 +13,10 @@ public class TableSawServerReceiver implements ServerPlayNetworking.ChannelRecei
 
 	@Override
 	public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-		//System.out.println("Received tablesaw message.");
 
 		int message = buf.readVarInt();
 		switch(message) {
 		case TableSaw.MESSAGE_ENGAGE_TABLESAW: {
-			//System.out.println("Engaging the tablesaw?");
 
 			//Get the rest of the data out of the packet
 			final boolean multiCraft = buf.readBoolean();

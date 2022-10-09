@@ -1,7 +1,6 @@
 package io.github.debuggyteam.tablesaw;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.resource.loader.api.reloader.SimpleSynchronousResourceReloader;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -29,7 +26,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
@@ -46,11 +42,8 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 	
 	@Override
 	public void reload(ResourceManager manager) {
+		//We start fresh at every datapack reload
 		TableSawRecipes.serverInstance().clearAllRecipes();
-		
-		Gson gson = new GsonBuilder().create();
-		
-		//TODO: Builtins
 		
 		//TODO: Heuristics
 		
@@ -68,39 +61,35 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 			compat.run(api);
 		}
 		
-		//Load data recipes
+		//Load data recipes, including our builtins
 		Map<Identifier, Resource> tableSawRecipes = manager.findResources("custom_recipes/tablesaw", (id)->id.getPath().endsWith(".json"));
-		//System.out.println("################ Recipe definitions found: "+tableSawRecipes.size());
 		for(Map.Entry<Identifier, Resource> resource : tableSawRecipes.entrySet()) {
-			//System.out.println("Parsing "+resource.getKey());
 			
 			try {
 				String recipeString = new String(resource.getValue().open().readAllBytes(), StandardCharsets.UTF_8);
 				JsonElement elem = JsonParser.parseString(recipeString);
 				if (elem instanceof JsonArray array) {
-					//System.out.println("Parsing recipe array");
 					for(JsonElement arrayItem : array) {
 						if (arrayItem instanceof JsonObject objItem) {
 							TableSawRecipe recipe = parseRecipe(objItem);
-							if (recipe!=null) {
+							if (recipe != null) {
 								TableSawRecipes.serverInstance().registerRecipe(recipe);
 							}
 						}
 					}
 				} else if (elem instanceof JsonObject o) {
 					JsonArray recipesArray = getArray(o, "recipes");
-					if (recipesArray!=null) {
-						//System.out.println("Parsing nested recipe array");
+					if (recipesArray != null) {
 						
 						Boolean replace = getBoolean(o, "replace");
-						if (replace==null) replace = Boolean.FALSE;
+						if (replace == null) replace = Boolean.FALSE;
 						
 						List<TableSawRecipe> results = new ArrayList<>();
-						//TODO: Parse each result
+						
 						for(JsonElement recipeElem : recipesArray) {
 							if (recipeElem instanceof JsonObject o2) {
 								TableSawRecipe r = parseRecipe(o2);
-								if (r!=null) results.add(r);
+								if (r != null) results.add(r);
 							}
 						}
 						
@@ -114,7 +103,7 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 					} else {
 						//System.out.println("Parsing single recipe");
 						TableSawRecipe recipe = parseRecipe(o);
-						if (recipe!=null) {
+						if (recipe != null) {
 							TableSawRecipes.serverInstance().registerRecipe(recipe);
 						}
 					}
@@ -133,8 +122,12 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 		TableSawRecipes.clientInstance().copyFrom(TableSawRecipes.serverInstance());
 	}
 
-	protected TableSawRecipe parseRecipe(JsonObject obj) {
-		//System.out.println("Parsing recipe: "+obj.toString());
+	/**
+	 * Takes a JsonObject and, if possible, creates a TableSawRecipe out of it.
+	 * @param obj The object representing a recipe
+	 * @return If the JsonObject represents a valid TableSaw recipe, that recipe. If any error happened, returns null with no side effects.
+	 */
+	protected @Nullable TableSawRecipe parseRecipe(JsonObject obj) {
 		
 		String itemId = null;
 		Integer count = null;
@@ -169,7 +162,6 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 			
 			resultItemStack = new ItemStack(resultItem, resultCount);
 			
-			//Unpacking the NBT here is extremely experimental
 			JsonObject tagObject = getObject(resultObject, "tag");
 			if (tagObject != null) {
 				try {
@@ -190,12 +182,11 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 		}
 		
 		TableSawRecipe result = new TableSawRecipe(inputItem, count, resultItemStack);
-		//System.out.println("Recipe created.");
 		return result;
 	}
 	
 	private @Nullable JsonArray getArray(@Nullable JsonObject obj, String key) {
-		if (obj==null) return null;
+		if (obj == null) return null;
 		
 		JsonElement e = obj.get(key);
 		if (e instanceof JsonArray array) {
@@ -206,7 +197,7 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 	}
 	
 	private @Nullable String getString(@Nullable JsonObject obj, String key) {
-		if (obj==null) return null;
+		if (obj == null) return null;
 		
 		JsonElement e = obj.get(key);
 		if (e instanceof JsonPrimitive prim) {
@@ -217,7 +208,7 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 	}
 	
 	private @Nullable Integer getInteger(@Nullable JsonObject obj, String key) {
-		if (obj==null) return null;
+		if (obj == null) return null;
 		
 		JsonElement e = obj.get(key);
 		if (e instanceof JsonPrimitive prim) {
@@ -228,7 +219,7 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 	}
 	
 	private @Nullable Boolean getBoolean(@Nullable JsonObject obj, String key) {
-		if (obj==null) return null;
+		if (obj == null) return null;
 		
 		JsonElement e = obj.get(key);
 		if (e instanceof JsonPrimitive prim) {
@@ -239,7 +230,7 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 	}
 	
 	private @Nullable JsonObject getObject(@Nullable JsonObject obj, String key) {
-		if (obj==null) return null;
+		if (obj == null) return null;
 		
 		JsonElement e = obj.get(key);
 		if (e instanceof JsonObject o) {

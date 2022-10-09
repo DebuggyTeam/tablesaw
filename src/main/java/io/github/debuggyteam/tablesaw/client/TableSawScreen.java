@@ -226,7 +226,7 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 		List<TableSawRecipe> list = getClientsideRecipes();
 		if (list.size() == 0) return;
 		
-		int curSlot = scrollOffset*4;
+		int curSlot = scrollOffset * 4;
 		
 		loop:
 		for(int yi = 0; yi < 3; yi++) {
@@ -236,12 +236,11 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 				this.client.getItemRenderer().renderInGuiWithOverrides(stack, x + (xi * RECIPE_SLOT_WIDTH), y + (yi * RECIPE_SLOT_HEIGHT) + 2);
 				
 				String label = null;
-				if (recipe.getQuantity()!=1) {
-					label = recipe.getQuantity()+":"+stack.getCount();
+				if (recipe.getQuantity() != 1) {
+					label = recipe.getQuantity() + ":" + stack.getCount();
 				}
 				
 				this.itemRenderer.renderGuiItemOverlay(this.textRenderer, stack, x + (xi * RECIPE_SLOT_WIDTH), y + (yi * RECIPE_SLOT_HEIGHT) + 2, label);
-				
 				
 				curSlot++;
 				if (curSlot >= list.size()) break loop;

@@ -40,23 +40,6 @@ public class TableSaw implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier(MODID, "tablesaw"),
                 new BlockItem(TABLESAW, new QuiltItemSettings().group(ItemGroup.DECORATIONS)));
         
-        //TableSawRecipes recipes = TableSawRecipes.serverInstance();
-        /*
-        recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.OAK_STAIRS));
-        recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.OAK_FENCE));
-        recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.OAK_DOOR));
-        recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.OAK_BUTTON));
-        recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.OAK_FENCE_GATE));
-        recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.OAK_PRESSURE_PLATE));
-        recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.OAK_SIGN));
-        recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.OAK_SLAB));
-        recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.OAK_TRAPDOOR));
-        //Silly blocks to force the recipes to scroll
-        recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.BARREL));
-        recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.COMPOSTER));
-        recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.BEEHIVE));
-        recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.CHEST));*/
-        
         ServerPlayNetworking.registerGlobalReceiver(TABLESAW_CHANNEL, new TableSawServerReceiver());
         
         ResourceLoader.get(ResourceType.SERVER_DATA).registerReloader(new TableSawResourceLoader());

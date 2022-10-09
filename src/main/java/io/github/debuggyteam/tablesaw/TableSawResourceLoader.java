@@ -1,6 +1,7 @@
 package io.github.debuggyteam.tablesaw;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
@@ -67,12 +69,14 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 		}
 		
 		//Load data recipes
-		Map<Identifier, Resource> tableSawRecipes = manager.findResources("recipes/tablesaw", (id)->id.getPath().endsWith(".json"));
+		Map<Identifier, Resource> tableSawRecipes = manager.findResources("custom_recipes/tablesaw", (id)->id.getPath().endsWith(".json"));
+		//System.out.println("################ Recipe definitions found: "+tableSawRecipes.size());
 		for(Map.Entry<Identifier, Resource> resource : tableSawRecipes.entrySet()) {
+			//System.out.println("Parsing "+resource.getKey());
 			
 			try {
 				String recipeString = new String(resource.getValue().open().readAllBytes(), StandardCharsets.UTF_8);
-				JsonElement elem = gson.toJsonTree(recipeString);
+				JsonElement elem = JsonParser.parseString(recipeString);
 				if (elem instanceof JsonArray array) {
 					//System.out.println("Parsing recipe array");
 					for(JsonElement arrayItem : array) {
@@ -114,6 +118,9 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 							TableSawRecipes.serverInstance().registerRecipe(recipe);
 						}
 					}
+				} else {
+					//System.out.println("UNKNOWN JSON ROOT: "+elem.getClass().getCanonicalName()+": "+elem.toString());
+					
 				}
 				
 				//System.out.println("RECIPE: "+recipeString);
@@ -121,9 +128,13 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 				e.printStackTrace();
 			}
 		}
+		
+		//TODO: Remove when sync happens
+		TableSawRecipes.clientInstance().copyFrom(TableSawRecipes.serverInstance());
 	}
 
 	protected TableSawRecipe parseRecipe(JsonObject obj) {
+		//System.out.println("Parsing recipe: "+obj.toString());
 		
 		String itemId = null;
 		Integer count = null;
@@ -179,6 +190,7 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 		}
 		
 		TableSawRecipe result = new TableSawRecipe(inputItem, count, resultItemStack);
+		//System.out.println("Recipe created.");
 		return result;
 	}
 	

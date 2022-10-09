@@ -5,7 +5,6 @@ import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
 import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 
 import io.github.debuggyteam.tablesaw.TableSaw;
-import io.github.debuggyteam.tablesaw.TableSawRecipes;
 import io.github.debuggyteam.tablesaw.TableSawScreenHandler;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.entity.player.PlayerInventory;
@@ -30,8 +29,6 @@ public class TableSawClient implements ClientModInitializer {
 			
 			System.out.println("Received recipe message from server.");
 		});
-		
-		TableSawRecipes.clientInstance().copyFrom(TableSawRecipes.serverInstance()); //For testing! Remove once sync is implemented!
 	}
 
 }

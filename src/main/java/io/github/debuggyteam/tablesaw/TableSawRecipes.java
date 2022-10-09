@@ -11,7 +11,6 @@ import com.google.common.collect.Multimap;
 import io.github.debuggyteam.tablesaw.api.TableSawRecipe;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;

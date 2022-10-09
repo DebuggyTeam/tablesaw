@@ -1,10 +1,8 @@
 package io.github.debuggyteam.tablesaw;
 
-import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
@@ -16,7 +14,6 @@ import org.quiltmc.qsl.block.extensions.api.QuiltBlockSettings;
 import org.quiltmc.qsl.item.setting.api.QuiltItemSettings;
 import org.quiltmc.qsl.networking.api.ServerPlayNetworking;
 import org.quiltmc.qsl.resource.loader.api.ResourceLoader;
-import org.quiltmc.qsl.resource.loader.api.ResourceLoaderEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +40,8 @@ public class TableSaw implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier(MODID, "tablesaw"),
                 new BlockItem(TABLESAW, new QuiltItemSettings().group(ItemGroup.DECORATIONS)));
         
-        TableSawRecipes recipes = TableSawRecipes.serverInstance();
+        //TableSawRecipes recipes = TableSawRecipes.serverInstance();
+        /*
         recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.OAK_STAIRS));
         recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.OAK_FENCE));
         recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.OAK_DOOR));
@@ -57,7 +55,7 @@ public class TableSaw implements ModInitializer {
         recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.BARREL));
         recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.COMPOSTER));
         recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.BEEHIVE));
-        recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.CHEST));
+        recipes.registerRecipe(Blocks.OAK_PLANKS, 1, new ItemStack(Blocks.CHEST));*/
         
         ServerPlayNetworking.registerGlobalReceiver(TABLESAW_CHANNEL, new TableSawServerReceiver());
         

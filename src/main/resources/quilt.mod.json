@@ -8,7 +8,8 @@
 			"name": "TableSaw",
 			"description": "A mod that adds a sawmill for cutting wooden blocks.",
 			"contributors": {
-				"woodiertexas": "Owner"
+				"Debuggy Team": "Owner",
+				"Falkreon": "Contributor; Mod Concept"
 			},
 			"contact": {
 				"homepage": "https://github.com/DebuggyTeam/tablesaw",

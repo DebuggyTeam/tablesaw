@@ -40,8 +40,14 @@ public class TableSawClient implements ClientModInitializer {
 				int quantity = buf.readVarInt();
 				ItemStack result = buf.readItemStack();
 				
-				if (inputItem == Items.AIR) continue; //TODO: Throw an error??
-				if (quantity == 0) continue; // " "
+				if (inputItem == Items.AIR) {
+					TableSaw.LOGGER.error("Client received a synced recipe with invalid input item \"{}\". Ignoring.", id);
+					continue;
+				}
+				if (quantity == 0) {
+					TableSaw.LOGGER.error("Client received a synced recipe requiring zero of input item \"{}\". Ignoring.", id);
+					continue;
+				}
 				
 				TableSawRecipe recipe = new TableSawRecipe(inputItem, quantity, result);
 				recipes.add(recipe);
@@ -55,8 +61,6 @@ public class TableSawClient implements ClientModInitializer {
 				TableSawRecipes tsr = TableSawRecipes.clientInstance();
 				for(TableSawRecipe r : recipes) tsr.registerRecipe(r);
 			});
-			
-			//System.out.println("Received recipe message from server.");
 		});
 	}
 

@@ -144,7 +144,7 @@ public class TableSawScreenHandler extends ScreenHandler {
 				
 				int availableInputQuantity = this.input.getStack(0).getCount();
 				int availableCraftsFromSource = availableInputQuantity / recipe.getQuantity();
-				if (availableCraftsFromSource<=0) return; //We don't have enough input
+				if (availableCraftsFromSource <= 0) return; //We don't have enough input
 				
 				ItemStack destination = this.output.getStack(0);
 				if (!(destination.isEmpty() || ItemStack.canCombine(recipe.getResult(), destination))) {

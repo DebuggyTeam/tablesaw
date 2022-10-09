@@ -33,7 +33,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class TableSawResourceLoader implements SimpleSynchronousResourceReloader {
-	public static final Identifier ID = new Identifier(TableSaw.MODID, "recipe_loader");
+	public static final Identifier ID = TableSaw.identifier("recipe_loader");
 	
 	@Override
 	public @NotNull Identifier getQuiltId() {
@@ -67,54 +67,51 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 			
 			try {
 				String recipeString = new String(resource.getValue().open().readAllBytes(), StandardCharsets.UTF_8);
-				JsonElement elem = JsonParser.parseString(recipeString);
-				if (elem instanceof JsonArray array) {
-					for(JsonElement arrayItem : array) {
-						if (arrayItem instanceof JsonObject objItem) {
-							TableSawRecipe recipe = parseRecipe(objItem);
+				JsonElement jsonRoot = JsonParser.parseString(recipeString);
+				if (jsonRoot instanceof JsonArray rootArray) {
+					for(JsonElement recipeElem : rootArray) {
+						if (recipeElem instanceof JsonObject recipeObject) {
+							TableSawRecipe recipe = parseRecipe(recipeObject);
 							if (recipe != null) {
 								TableSawRecipes.serverInstance().registerRecipe(recipe);
 							}
 						}
 					}
-				} else if (elem instanceof JsonObject o) {
-					JsonArray recipesArray = getArray(o, "recipes");
+				} else if (jsonRoot instanceof JsonObject rootObject) {
+					JsonArray recipesArray = getArray(rootObject, "recipes");
 					if (recipesArray != null) {
 						
-						Boolean replace = getBoolean(o, "replace");
+						Boolean replace = getBoolean(rootObject, "replace");
 						if (replace == null) replace = Boolean.FALSE;
 						
 						List<TableSawRecipe> results = new ArrayList<>();
 						
 						for(JsonElement recipeElem : recipesArray) {
-							if (recipeElem instanceof JsonObject o2) {
-								TableSawRecipe r = parseRecipe(o2);
-								if (r != null) results.add(r);
+							if (recipeElem instanceof JsonObject recipeObject) {
+								TableSawRecipe recipe = parseRecipe(recipeObject);
+								if (recipe != null) results.add(recipe);
 							}
 						}
 						
 						if (replace) {
-							for(TableSawRecipe r : results) {
-								TableSawRecipes.serverInstance().clearRecipesFor(r.getInput());
+							for(TableSawRecipe recipe : results) {
+								TableSawRecipes.serverInstance().clearRecipesFor(recipe.getInput());
 							}
 						}
 						
-						for(TableSawRecipe r : results) TableSawRecipes.serverInstance().registerRecipe(r);
+						for(TableSawRecipe recipe : results) TableSawRecipes.serverInstance().registerRecipe(recipe);
 					} else {
 						//System.out.println("Parsing single recipe");
-						TableSawRecipe recipe = parseRecipe(o);
+						TableSawRecipe recipe = parseRecipe(rootObject);
 						if (recipe != null) {
 							TableSawRecipes.serverInstance().registerRecipe(recipe);
 						}
 					}
 				} else {
-					//System.out.println("UNKNOWN JSON ROOT: "+elem.getClass().getCanonicalName()+": "+elem.toString());
-					
+					TableSaw.LOGGER.error("Could not parse recipe(s) from Resource {} - root element needs to be an object or an array.", resource.getKey());
 				}
-				
-				//System.out.println("RECIPE: "+recipeString);
 			} catch (IOException e) {
-				e.printStackTrace();
+				TableSaw.LOGGER.error("Could not load recipe resource " + resource.getKey(), e);
 			}
 		}
 	}

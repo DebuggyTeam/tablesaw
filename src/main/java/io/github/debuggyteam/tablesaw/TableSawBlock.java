@@ -26,7 +26,7 @@ public class TableSawBlock extends StonecutterBlock {
     private static final Text GUI_TITLE = Text.translatable("container.tablesaw.tablesaw");
     
     private static final double PX = 1 / 16d;
-    private static final double TOP_THICKNESS =  3 * PX;
+    private static final double TOP_THICKNESS =  4 * PX;
     private static final double FULL_HEIGHT   = 16 * PX;
     private static final double FULL_WIDTH    = 16 * PX;
     private static final double LEG_WIDTH     =  3 * PX;

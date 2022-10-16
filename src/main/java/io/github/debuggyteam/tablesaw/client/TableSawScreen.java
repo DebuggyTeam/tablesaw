@@ -2,11 +2,15 @@ package io.github.debuggyteam.tablesaw.client;
 
 import java.util.List;
 
+import org.quiltmc.qsl.networking.api.PacketByteBufs;
+import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import io.github.debuggyteam.tablesaw.TableSaw;
 import io.github.debuggyteam.tablesaw.TableSawRecipes;
 import io.github.debuggyteam.tablesaw.TableSawScreenHandler;
+import io.github.debuggyteam.tablesaw.api.TableSawRecipe;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
@@ -15,6 +19,7 @@ import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -71,7 +76,15 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 		
 		this.addDrawableChild(new TexturedButtonWidget(x + SAW_BUTTON_X, y + SAW_BUTTON_Y, SAW_BUTTON_WIDTH, SAW_BUTTON_HEIGHT, SAW_BUTTON_U, SAW_BUTTON_V, 16, BUTTON_TEXTURE, 16, 32,
 				(button) -> {
-					System.out.println("Foo");
+					if (!selectedItem.isEmpty()) {
+						PacketByteBuf buf = PacketByteBufs.create();
+						buf.writeVarInt(TableSaw.MESSAGE_ENGAGE_TABLESAW);
+						buf.writeBoolean(HandledScreen.hasShiftDown()); // ask the server to multicraft if true
+						buf.writeItemStack(selectedItem);
+						
+						ClientPlayNetworking.send(TableSaw.TABLESAW_CHANNEL, buf);
+						
+					}
 				}));
 	}
 
@@ -100,14 +113,14 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	
 	public void onContentsChanged() {
 		if (selectedSlot != -1) {
-			List<ItemStack> list = getClientsideRecipes();
+			List<TableSawRecipe> list = getClientsideRecipes();
 			if (selectedSlot >= list.size()) {
 				selectedSlot = -1;
 				selectedItem = ItemStack.EMPTY;
 				scrollAmount = 0f;
 				scrollOffset = 0;
 				return;
-			} else if (ItemStack.areEqual(selectedItem, list.get(selectedSlot))) {
+			} else if (ItemStack.areEqual(selectedItem, list.get(selectedSlot).getResult())) {
 				//Do not reset the stack
 			} else {
 				selectedSlot = -1;
@@ -134,10 +147,10 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 				if (gridX >= 0 || gridY >= 0 || gridX < 4 || gridY < 3) {
 					int clickedSlot = (scrollOffset * 4) + (gridY * 4) + gridX;
 					
-					List<ItemStack> list = getClientsideRecipes();
+					List<TableSawRecipe> list = getClientsideRecipes();
 					if (clickedSlot < list.size()) {
 						selectedSlot = clickedSlot;
-						selectedItem = list.get(selectedSlot);
+						selectedItem = list.get(selectedSlot).getResult();
 						
 						MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
 						return true;
@@ -180,7 +193,7 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	}
 	
 	private void renderRecipeBackground(MatrixStack matrices, int mouseX, int mouseY, int x, int y, int scrollOffset) {
-		List<ItemStack> list = getClientsideRecipes();
+		List<TableSawRecipe> list = getClientsideRecipes();
 		if (list.size()==0) return;
 		
 		int curSlot = scrollOffset*4;
@@ -193,7 +206,7 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 				
 				int imageY = RECIPE_SLOT_Y;
 				
-				if (ItemStack.areEqual(selectedItem, list.get(curSlot))) {
+				if (ItemStack.areEqual(selectedItem, list.get(curSlot).getResult())) {
 					imageY = INSET_RECIPE_SLOT_Y;
 				} else {
 					if (mouseX >= slotX && mouseY >= slotY && mouseX < slotX + RECIPE_SLOT_WIDTH && mouseY < slotY + RECIPE_SLOT_HEIGHT) {
@@ -210,15 +223,24 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	}
 	
 	private void renderRecipeIcons(int x, int y, int scrollOffset) {
-		List<ItemStack> list = getClientsideRecipes();
+		List<TableSawRecipe> list = getClientsideRecipes();
 		if (list.size() == 0) return;
 		
-		int curSlot = scrollOffset*4;
+		int curSlot = scrollOffset * 4;
 		
 		loop:
 		for(int yi = 0; yi < 3; yi++) {
 			for(int xi = 0; xi < 4; xi++) {
-				this.client.getItemRenderer().renderInGuiWithOverrides(list.get(curSlot), x + (xi * RECIPE_SLOT_WIDTH), y + (yi * RECIPE_SLOT_HEIGHT) + 2);
+				TableSawRecipe recipe = list.get(curSlot);
+				ItemStack stack = list.get(curSlot).getResult();
+				this.client.getItemRenderer().renderInGuiWithOverrides(stack, x + (xi * RECIPE_SLOT_WIDTH), y + (yi * RECIPE_SLOT_HEIGHT) + 2);
+				
+				String label = null;
+				if (recipe.getQuantity() != 1) {
+					label = recipe.getQuantity() + ":" + stack.getCount();
+				}
+				
+				this.itemRenderer.renderGuiItemOverlay(this.textRenderer, stack, x + (xi * RECIPE_SLOT_WIDTH), y + (yi * RECIPE_SLOT_HEIGHT) + 2, label);
 				
 				curSlot++;
 				if (curSlot >= list.size()) break loop;
@@ -240,9 +262,9 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 				int gridY = ((int) y - recipeY) / RECIPE_SLOT_HEIGHT;
 				if (gridX >= 0 || gridY >= 0 || gridX < 4 || gridY < 3) {
 					int hoveredSlot = (scrollOffset * 4) + (gridY * 4) + gridX;
-					List<ItemStack> list = this.getClientsideRecipes();
+					List<TableSawRecipe> list = this.getClientsideRecipes();
 					if (hoveredSlot >= 0 && hoveredSlot < list.size()) {
-						renderTooltip(matrices, list.get(hoveredSlot), x, y);
+						renderTooltip(matrices, list.get(hoveredSlot).getResult(), x, y);
 					}
 				}
 			}
@@ -253,7 +275,7 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 		return TableSawRecipes.clientInstance().getRecipes(this.handler.getSlot(0).getStack().getItem()).size();
 	}
 	
-	public List<ItemStack> getClientsideRecipes() {
+	public List<TableSawRecipe> getClientsideRecipes() {
 		return TableSawRecipes.clientInstance().getRecipes(this.handler.getSlot(0).getStack().getItem());
 	}
 	

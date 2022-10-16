@@ -1,5 +1,8 @@
 package io.github.debuggyteam.tablesaw;
 
+import java.util.List;
+
+import io.github.debuggyteam.tablesaw.api.TableSawRecipe;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -129,4 +132,52 @@ public class TableSawScreenHandler extends ScreenHandler {
 		this.output.removeStack(0);
 		this.context.run((world, pos) -> this.dropInventory(player, this.input));
 	}
+
+	public void tryCraft(ItemStack stack, boolean multiCraft) {
+		List<TableSawRecipe> recipes = TableSawRecipes.serverInstance().getRecipes(this.input.getStack(0).getItem());
+		for(TableSawRecipe recipe : recipes) {
+			if (ItemStack.areEqual(recipe.getResult(), stack)) {
+				
+				/* This is a complex interlocking series of steps to verify the input count, that the
+				 * output can fit in the destination slot, and then deduct the inputs, and *then* insert the results.
+				 */
+				
+				int availableInputQuantity = this.input.getStack(0).getCount();
+				int availableCraftsFromSource = availableInputQuantity / recipe.getQuantity();
+				if (availableCraftsFromSource <= 0) return; //We don't have enough input
+				
+				ItemStack destination = this.output.getStack(0);
+				if (!(destination.isEmpty() || ItemStack.canCombine(recipe.getResult(), destination))) {
+					return; //We can't put the items in the output slot
+				}
+				
+				int availableRoom = destination.isEmpty() ? recipe.getResult().getMaxCount() : destination.getMaxCount() - destination.getCount();
+				int destinationCraftableQuantity = availableRoom / recipe.getResult().getCount();
+				
+				if (destinationCraftableQuantity <= 0) return; //Not enough room in the output slot
+				
+				int toCraft = (multiCraft) ? Math.min(availableCraftsFromSource, destinationCraftableQuantity) : 1;
+				
+				for(int i=0; i<toCraft; i++) {
+					input.removeStack(0, recipe.getQuantity());
+					ItemStack outputStack = this.output.getStack(0);
+					if (outputStack.isEmpty()) {
+						output.setStack(0, recipe.getResult().copy());
+					} else {
+						outputStack.setCount(outputStack.getCount() + recipe.getResult().getCount());
+						output.setStack(0, outputStack);
+					}
+				}
+				
+				//Shouldn't be needed but enable if sync gets funky
+				/*
+				context.run((world, pos) -> {
+					world.markDirty(pos);
+				});*/
+				
+				return;
+			}
+		}
+	}
+	
 }

@@ -3,8 +3,12 @@ package io.github.debuggyteam.tablesaw.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.debuggyteam.tablesaw.TableSawBlock;
+import net.minecraft.block.Block;
+import net.minecraft.client.render.RenderLayer;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
+import org.quiltmc.qsl.block.extensions.api.client.BlockRenderLayerMap;
 import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 
 import io.github.debuggyteam.tablesaw.TableSaw;
@@ -19,6 +23,8 @@ import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+
+import static io.github.debuggyteam.tablesaw.TableSaw.TABLESAW;
 
 public class TableSawClient implements ClientModInitializer {
 
@@ -59,9 +65,11 @@ public class TableSawClient implements ClientModInitializer {
 			client.execute(() -> {
 				//Apply data to live objects
 				TableSawRecipes tsr = TableSawRecipes.clientInstance();
-				for(TableSawRecipe r : recipes) tsr.registerRecipe(r);
+				for(TableSawRecipe sawRecipe : recipes) tsr.registerRecipe(sawRecipe);
 			});
 		});
+
+		BlockRenderLayerMap.put(RenderLayer.getCutout(), TABLESAW);
 	}
 
 }

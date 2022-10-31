@@ -1,0 +1,94 @@
+[
+	{
+		"input": {
+			"item": "minecraft:birch_planks",
+			"count": 3
+		},
+		"result": {
+			"item": "minecraft:birch_stairs",
+			"count": 2
+		}
+	},
+	{
+		"input": "minecraft:birch_planks",
+		"result": {
+			"item": "minecraft:birch_slab",
+			"count": 2
+		}
+	},
+	{
+		"input": {
+			"item": "minecraft:birch_planks",
+			"count": 2
+		},
+		"result": "minecraft:birch_door"
+	},
+	{
+		"input": {
+			"item": "minecraft:birch_planks",
+			"count": 5
+		},
+		"result": {
+			"item": "minecraft:birch_fence",
+			"count": 3
+		}
+	},
+	{
+		"input": {
+			"item": "minecraft:birch_planks",
+			"count": 4
+		},
+		"result": "minecraft:birch_fence_gate"
+	},
+	{
+		"input": "minecraft:birch_planks",
+		"result": "minecraft:birch_button"
+	},
+	{
+		"input": {
+			"item": "minecraft:birch_planks",
+			"count": 2
+		},
+		"result": "minecraft:birch_pressure_plate"
+	},
+	{
+		"input": {
+			"item": "minecraft:birch_planks",
+			"count": 3
+		},
+		"result": "minecraft:birch_trapdoor"
+	},
+	{
+		"input": {
+			"item": "minecraft:birch_planks",
+			"count": 2
+		},
+		"result": "minecraft:birch_sign"
+	},
+
+
+	{
+		"input": {
+			"item": "minecraft:birch_planks",
+			"count": 3
+		},
+		"result": {
+			"item": "minecraft:bowl",
+			"count": 4
+		}
+	},
+	{
+		"input": {
+			"item": "minecraft:birch_planks",
+			"count": 8
+		},
+		"result": "minecraft:chest"
+	},
+	{
+		"input": {
+			"item": "minecraft:birch_planks",
+			"count": 5
+		},
+		"result": "minecraft:birch_boat"
+	}
+]

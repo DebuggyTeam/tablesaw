@@ -1,0 +1,94 @@
+[
+	{
+		"input": {
+			"item": "minecraft:acacia_planks",
+			"count": 3
+		},
+		"result": {
+			"item": "minecraft:acacia_stairs",
+			"count": 2
+		}
+	},
+	{
+		"input": "minecraft:acacia_planks",
+		"result": {
+			"item": "minecraft:acacia_slab",
+			"count": 2
+		}
+	},
+	{
+		"input": {
+			"item": "minecraft:acacia_planks",
+			"count": 2
+		},
+		"result": "minecraft:acacia_door"
+	},
+	{
+		"input": {
+			"item": "minecraft:acacia_planks",
+			"count": 5
+		},
+		"result": {
+			"item": "minecraft:acacia_fence",
+			"count": 3
+		}
+	},
+	{
+		"input": {
+			"item": "minecraft:acacia_planks",
+			"count": 4
+		},
+		"result": "minecraft:acacia_fence_gate"
+	},
+	{
+		"input": "minecraft:acacia_planks",
+		"result": "minecraft:acacia_button"
+	},
+	{
+		"input": {
+			"item": "minecraft:acacia_planks",
+			"count": 2
+		},
+		"result": "minecraft:acacia_pressure_plate"
+	},
+	{
+		"input": {
+			"item": "minecraft:acacia_planks",
+			"count": 3
+		},
+		"result": "minecraft:acacia_trapdoor"
+	},
+	{
+		"input": {
+			"item": "minecraft:acacia_planks",
+			"count": 2
+		},
+		"result": "minecraft:acacia_sign"
+	},
+
+
+	{
+		"input": {
+			"item": "minecraft:acacia_planks",
+			"count": 3
+		},
+		"result": {
+			"item": "minecraft:bowl",
+			"count": 4
+		}
+	},
+	{
+		"input": {
+			"item": "minecraft:acacia_planks",
+			"count": 8
+		},
+		"result": "minecraft:chest"
+	},
+	{
+		"input": {
+			"item": "minecraft:acacia_planks",
+			"count": 5
+		},
+		"result": "minecraft:acacia_boat"
+	}
+]

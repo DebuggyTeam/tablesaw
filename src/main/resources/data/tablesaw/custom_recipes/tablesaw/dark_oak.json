@@ -1,0 +1,94 @@
+[
+	{
+		"input": {
+			"item": "minecraft:dark_oak_planks",
+			"count": 3
+		},
+		"result": {
+			"item": "minecraft:dark_oak_stairs",
+			"count": 2
+		}
+	},
+	{
+		"input": "minecraft:dark_oak_planks",
+		"result": {
+			"item": "minecraft:dark_oak_slab",
+			"count": 2
+		}
+	},
+	{
+		"input": {
+			"item": "minecraft:dark_oak_planks",
+			"count": 2
+		},
+		"result": "minecraft:dark_oak_door"
+	},
+	{
+		"input": {
+			"item": "minecraft:dark_oak_planks",
+			"count": 5
+		},
+		"result": {
+			"item": "minecraft:dark_oak_fence",
+			"count": 3
+		}
+	},
+	{
+		"input": {
+			"item": "minecraft:dark_oak_planks",
+			"count": 4
+		},
+		"result": "minecraft:dark_oak_fence_gate"
+	},
+	{
+		"input": "minecraft:dark_oak_planks",
+		"result": "minecraft:dark_oak_button"
+	},
+	{
+		"input": {
+			"item": "minecraft:dark_oak_planks",
+			"count": 2
+		},
+		"result": "minecraft:dark_oak_pressure_plate"
+	},
+	{
+		"input": {
+			"item": "minecraft:dark_oak_planks",
+			"count": 3
+		},
+		"result": "minecraft:dark_oak_trapdoor"
+	},
+	{
+		"input": {
+			"item": "minecraft:dark_oak_planks",
+			"count": 2
+		},
+		"result": "minecraft:dark_oak_sign"
+	},
+
+
+	{
+		"input": {
+			"item": "minecraft:dark_oak_planks",
+			"count": 3
+		},
+		"result": {
+			"item": "minecraft:bowl",
+			"count": 4
+		}
+	},
+	{
+		"input": {
+			"item": "minecraft:dark_oak_planks",
+			"count": 8
+		},
+		"result": "minecraft:chest"
+	},
+	{
+		"input": {
+			"item": "minecraft:dark_oak_planks",
+			"count": 5
+		},
+		"result": "minecraft:dark_oak_boat"
+	}
+]

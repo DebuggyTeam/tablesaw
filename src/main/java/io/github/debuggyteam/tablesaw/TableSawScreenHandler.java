@@ -76,45 +76,6 @@ public class TableSawScreenHandler extends ScreenHandler {
 		
 		return true;
 	}
-
-	@Override
-	public ItemStack transferSlot(PlayerEntity player, int index) {
-		ItemStack result = ItemStack.EMPTY;
-		Slot slot = slots.get(index);
-		if (slot != null && slot.hasStack()) {
-			ItemStack initial = slot.getStack();
-			result = initial.copy();
-			if (index == 0) {
-				if (!this.insertItem(result, 2, 38, false)) {
-					return ItemStack.EMPTY;
-				}
-			} else if (index == 1) {
-				if (!this.insertItem(result, 2, 38, false)) {
-					return ItemStack.EMPTY;
-				}
-			} else if (index >= 2 && index < 29) {
-				if (!this.insertItem(result, 29, 38, false)) {
-					return ItemStack.EMPTY;
-				}
-			} else if (index >= 29 && index < 38 && !this.insertItem(result, 2, 29, false)) {
-				return ItemStack.EMPTY;
-			}
-			
-			if (result.isEmpty()) {
-				slot.setStack(ItemStack.EMPTY);
-			}
-			
-			slot.markDirty();
-			if (result.getCount() == initial.getCount()) {
-				return ItemStack.EMPTY;
-			}
-			
-			slot.onTakeItem(player, result);
-			this.sendContentUpdates();
-		}
-		
-		return result;
-	}
 	
 	public void setListenerScreen(Runnable listener) {
 		this.listenerScreen = listener;
@@ -128,7 +89,41 @@ public class TableSawScreenHandler extends ScreenHandler {
 
 	@Override
 	public ItemStack quickTransfer(PlayerEntity player, int fromIndex) {
-		return null;
+		ItemStack result = ItemStack.EMPTY;
+		Slot slot = slots.get(fromIndex);
+		if (slot != null && slot.hasStack()) {
+			ItemStack initial = slot.getStack();
+			result = initial.copy();
+			if (fromIndex == 0) {
+				if (!this.insertItem(result, 2, 38, false)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (fromIndex == 1) {
+				if (!this.insertItem(result, 2, 38, false)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (fromIndex >= 2 && fromIndex < 29) {
+				if (!this.insertItem(result, 29, 38, false)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (fromIndex >= 29 && fromIndex < 38 && !this.insertItem(result, 2, 29, false)) {
+				return ItemStack.EMPTY;
+			}
+
+			if (result.isEmpty()) {
+				slot.setStack(ItemStack.EMPTY);
+			}
+
+			slot.markDirty();
+			if (result.getCount() == initial.getCount()) {
+				return ItemStack.EMPTY;
+			}
+
+			slot.onTakeItem(player, result);
+			this.sendContentUpdates();
+		}
+
+		return result;
 	}
 
 	@Override

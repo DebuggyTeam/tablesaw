@@ -125,7 +125,12 @@ public class TableSawScreenHandler extends ScreenHandler {
 		super.onContentChanged(inventory);
 		listenerScreen.run();
 	}
-	
+
+	@Override
+	public ItemStack quickTransfer(PlayerEntity player, int fromIndex) {
+		return null;
+	}
+
 	@Override
 	public void close(PlayerEntity player) {
 		super.close(player);

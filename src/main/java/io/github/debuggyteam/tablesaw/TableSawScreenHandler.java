@@ -130,7 +130,7 @@ public class TableSawScreenHandler extends ScreenHandler {
 						slot.setStack(ItemStack.EMPTY);
 					}
 					
-					System.out.println("Count remaining: "+result.getCount()+" initial: "+initial.getCount());
+					//System.out.println("Count remaining: " + result.getCount() + " initial: " + initial.getCount());
 					slot.markDirty();
 					if (result.getCount() == initial.getCount()) {
 						return ItemStack.EMPTY;

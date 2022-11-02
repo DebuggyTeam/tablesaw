@@ -3,28 +3,23 @@ package io.github.debuggyteam.tablesaw;
 import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-
-import java.util.Deque;
-import java.util.List;
 
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.quiltmc.qsl.block.extensions.api.QuiltBlockSettings;
 import org.quiltmc.qsl.item.setting.api.QuiltItemSettings;
-import org.quiltmc.qsl.networking.api.PacketByteBufs;
 import org.quiltmc.qsl.networking.api.ServerPlayConnectionEvents;
 import org.quiltmc.qsl.networking.api.ServerPlayNetworking;
 import org.quiltmc.qsl.resource.loader.api.ResourceLoader;
+import org.quiltmc.qsl.resource.loader.api.ResourceLoaderEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import io.github.debuggyteam.tablesaw.api.TableSawRecipe;
 
 public class TableSaw implements ModInitializer {
     public static final String MODID = "tablesaw";
@@ -52,39 +47,26 @@ public class TableSaw implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier(MODID, "tablesaw"),
                 new BlockItem(TABLESAW, new QuiltItemSettings().group(ItemGroup.DECORATIONS)));
         
+        // Receives serverside notice that the tablesaw craft button is clicked
         ServerPlayNetworking.registerGlobalReceiver(TABLESAW_CHANNEL, new TableSawServerReceiver());
         
+        // Updates recipes on the server when data is loaded or reloaded
         ResourceLoader.get(ResourceType.SERVER_DATA).registerReloader(new TableSawResourceLoader());
         
+        // Syncs recipes for all connected players when a live reload happens
+        ResourceLoaderEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, error) -> {
+            // Server will be null here if this is the first reload as the game is starting. In that case there are no players to notify.
+            if (server == null) return;
+            for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+                TableSawRecipeSync.syncFromServer(server, player);
+            }
+        });
+        
+        // Syncs recipes when a player connects
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-            Deque<TableSawRecipe> list = TableSawRecipes.serverInstance().queueAll();
-            
-            //Batch recipes in packets of 100 a pop
-            while(list.size() > 100) {
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeVarInt(100);
-                for(int i = 0; i < 100; i++) {
-                	writeRecipe(list.pop(), buf);
-                }
-                
-                ServerPlayNetworking.send(handler.getPlayer(), RECIPE_CHANNEL, buf);
-            }
-            
-            //cleanup any additional in a single packet
-            PacketByteBuf lastBuf = PacketByteBufs.create();
-            lastBuf.writeVarInt(list.size());
-            while(!list.isEmpty()) {
-            	writeRecipe(list.pop(), lastBuf);
-            }
-            ServerPlayNetworking.send(handler.getPlayer(), RECIPE_CHANNEL, lastBuf);
+            TableSawRecipeSync.syncFromServer(server, handler.getPlayer());
         });
     }
     
-    /** Writes a recipe to a PacketByteBuf */
-    private void writeRecipe(TableSawRecipe recipe, PacketByteBuf buf) {
-        String inputId = Registry.ITEM.getId(recipe.getInput()).toString();
-        buf.writeString(inputId);
-        buf.writeVarInt(recipe.getQuantity());
-        buf.writeItemStack(recipe.getResult());
-    }
+    
 }

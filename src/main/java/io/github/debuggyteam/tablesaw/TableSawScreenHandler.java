@@ -120,7 +120,7 @@ public class TableSawScreenHandler extends ScreenHandler {
 				if (!this.insertItem(result, FIRST_INVENTORY_SLOT, LAST_HOTBAR_SLOT + 1, false)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (fromIndex >=FIRST_INVENTORY_SLOT && fromIndex <= LAST_HOTBAR_SLOT) {
+			} else if (fromIndex >= FIRST_INVENTORY_SLOT && fromIndex <= LAST_HOTBAR_SLOT) {
 				// Item is coming from the inventory or hotbar, so try putting it into the input slot first.
 				
 				if (this.insertItem(result, INPUT_SLOT, INPUT_SLOT + 1, false)) {

@@ -39,7 +39,7 @@ public class TableSawRecipeSync {
 			ServerPlayNetworking.send(player, TableSaw.RECIPE_CHANNEL, buf);
 		}
 
-		//cleanup any additional in a single packet
+		//cleanup any additional recipes (< 100) in a single packet
 		PacketByteBuf lastBuf = PacketByteBufs.create();
 		lastBuf.writeVarInt(list.size());
 		while(!list.isEmpty()) {

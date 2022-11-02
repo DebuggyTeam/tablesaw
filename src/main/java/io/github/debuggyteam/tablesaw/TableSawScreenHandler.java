@@ -129,8 +129,8 @@ public class TableSawScreenHandler extends ScreenHandler {
 	@Override
 	public void close(PlayerEntity player) {
 		super.close(player);
-		this.output.removeStack(0);
 		this.context.run((world, pos) -> this.dropInventory(player, this.input));
+		this.context.run((world, pos) -> this.dropInventory(player, this.output));
 	}
 
 	public void tryCraft(ItemStack stack, boolean multiCraft) {

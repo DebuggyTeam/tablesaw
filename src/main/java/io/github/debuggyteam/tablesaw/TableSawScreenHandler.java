@@ -17,6 +17,10 @@ import net.minecraft.world.World;
 public class TableSawScreenHandler extends ScreenHandler {
 	public static final int INPUT_SLOT = 0;
 	public static final int OUTPUT_SLOT = 1;
+	public static final int FIRST_INVENTORY_SLOT = 2;
+	public static final int LAST_INVENTORY_SLOT = 28;
+	public static final int FIRST_HOTBAR_SLOT = 29;
+	public static final int LAST_HOTBAR_SLOT = 37;
 	
 	private static final double MAX_SQUARED_REACH = 6 * 6;
 	
@@ -94,35 +98,78 @@ public class TableSawScreenHandler extends ScreenHandler {
 		if (slot != null && slot.hasStack()) {
 			ItemStack initial = slot.getStack();
 			result = initial.copy();
-			if (fromIndex == 0) {
-				if (!this.insertItem(result, 2, 38, false)) {
+			
+			// Descriptive constants used here where possible. Could still use a total rewrite but the behavior is good.
+			
+			// Note: insertItem's "to" param is [seemingly] intentionally off-by-one. Thanks Mojang.
+			// To insert into only slot 2, DO:
+			//     insertItem(result, 2, 3, false)
+			// DO NOT:
+			//     insertItem(result, 2, 2, false)
+			// For this reason you'll see a lot of + 1's for clarity.
+			
+			if (fromIndex == INPUT_SLOT) {
+				// Try to move the item from the input slot back to the inventory, or failing that, the hotbar.
+				
+				if (!this.insertItem(result, FIRST_INVENTORY_SLOT, LAST_HOTBAR_SLOT + 1, false)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (fromIndex == 1) {
-				if (!this.insertItem(result, 2, 38, false)) {
+			} else if (fromIndex == OUTPUT_SLOT) {
+				// Try to move the item from the output slot into the inventory, or the hotbar if no inventory slots are available.
+				
+				if (!this.insertItem(result, FIRST_INVENTORY_SLOT, LAST_HOTBAR_SLOT + 1, false)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (fromIndex >= 2 && fromIndex < 29) {
-				if (!this.insertItem(result, 29, 38, false)) {
-					return ItemStack.EMPTY;
+			} else if (fromIndex >= FIRST_INVENTORY_SLOT && fromIndex <= LAST_HOTBAR_SLOT) {
+				// Item is coming from the inventory or hotbar, so try putting it into the input slot first.
+				
+				if (this.insertItem(result, INPUT_SLOT, INPUT_SLOT + 1, false)) {
+					// Success!
+					if (result.isEmpty()) {
+						//Very important to prevent dupes
+						slot.setStack(ItemStack.EMPTY);
+					}
+					
+					//System.out.println("Count remaining: " + result.getCount() + " initial: " + initial.getCount());
+					slot.markDirty();
+					if (result.getCount() == initial.getCount()) {
+						return ItemStack.EMPTY;
+					}
+					
+					slot.onTakeItem(player, result);
+					slot.setStack(result);
+					this.sendContentUpdates();
+					return result;
+				} else {
+					// Swap between the inventory and the hotbar since the input slot is occupied
+					
+					if (fromIndex >= FIRST_INVENTORY_SLOT && fromIndex <= LAST_INVENTORY_SLOT) {
+						if (!this.insertItem(result, FIRST_HOTBAR_SLOT, LAST_HOTBAR_SLOT + 1, false)) {
+							return ItemStack.EMPTY;
+						}
+					} else if (fromIndex >= FIRST_HOTBAR_SLOT && fromIndex <= LAST_HOTBAR_SLOT && !this.insertItem(result, FIRST_INVENTORY_SLOT, LAST_INVENTORY_SLOT + 1, false)) {
+						return ItemStack.EMPTY;
+					}
 				}
-			} else if (fromIndex >= 29 && fromIndex < 38 && !this.insertItem(result, 2, 29, false)) {
-				return ItemStack.EMPTY;
 			}
-
+			
+			// Replace zero-count result stacks with the EMPTY itemstack to help consistency
 			if (result.isEmpty()) {
 				slot.setStack(ItemStack.EMPTY);
 			}
-
+			
+			// Mark the slot dirty and duck out if nothing happened
 			slot.markDirty();
 			if (result.getCount() == initial.getCount()) {
 				return ItemStack.EMPTY;
 			}
-
+			
+			// Fire take-item events which can be important if e.g. the output slot goes back to stonecutter style.
 			slot.onTakeItem(player, result);
+			// Notify inventory listeners of any changes
 			this.sendContentUpdates();
 		}
-
+		
 		return result;
 	}
 

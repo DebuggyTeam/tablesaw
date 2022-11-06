@@ -1,3 +1,6 @@
+<a href="https://discord.gg/bWN57F5CCA"><img src="https://cdn.jsdelivr.net/gh/intergrav/devins-badges/assets/cozy/social/discord-plural_vector.svg" alt="Join our Discord server!" height=64></a> <a href="Insert Modrinth Link"><img src="https://cdn.jsdelivr.net/gh/intergrav/devins-badges/assets/cozy/available/modrinth_vector.svg" alt="Download on Modrinth." height=64></a>
+
+
 ## How to integrate Tablesaw into your mod
 
 You'd add new recipes to Tablesaw via a tablesaw recipe datapack. The instructions to successfully creating and testing the datapack are as follows:

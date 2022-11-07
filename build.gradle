@@ -1,7 +1,7 @@
 plugins {
 	id 'maven-publish'
+	id "com.modrinth.minotaur" version "2.4.5"
 	alias(libs.plugins.quilt.loom)
-	alias(libs.plugins.minotaur)
 }
 
 archivesBaseName = project.archives_base_name

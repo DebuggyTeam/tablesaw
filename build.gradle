@@ -8,12 +8,18 @@ archivesBaseName = project.archives_base_name
 version = project.version
 group = project.maven_group
 
-repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
+repositories {	
+	exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
 }
 
 // All the dependencies are declared at gradle/libs.version.toml and referenced with "libs.<id>"
@@ -84,6 +90,7 @@ publishing {
 	}
 }
 
+/*
 modrinth {
 	token = System.getenv("MODRINTH_TOKEN")
 	projectId = "tablesaw"
@@ -100,3 +107,4 @@ modrinth {
 		required.project "qsl"
 	}
 }
+*/

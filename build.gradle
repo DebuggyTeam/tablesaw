@@ -1,6 +1,7 @@
 plugins {
 	id 'maven-publish'
-	alias libs.plugins.quilt.loom
+	alias(libs.plugins.quilt.loom)
+	alias(libs.plugins.minotaur)
 }
 
 archivesBaseName = project.archives_base_name

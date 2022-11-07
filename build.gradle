@@ -9,17 +9,7 @@ version = project.version
 group = project.maven_group
 
 repositories {	
-	exclusiveContent {
-        forRepository {
-            maven {
-                name = "Modrinth"
-                url = "https://api.modrinth.com/maven"
-            }
-        }
-        filter {
-            includeGroup "maven.modrinth"
-        }
-    }
+	// something
 }
 
 // All the dependencies are declared at gradle/libs.version.toml and referenced with "libs.<id>"

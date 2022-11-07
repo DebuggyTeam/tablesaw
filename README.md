@@ -1,5 +1,7 @@
 <a href="https://discord.gg/bWN57F5CCA"><img src="https://cdn.jsdelivr.net/gh/intergrav/devins-badges/assets/cozy/social/discord-plural_vector.svg" alt="Join our Discord server!" height=64></a> <a href="Insert Modrinth Link"><img src="https://cdn.jsdelivr.net/gh/intergrav/devins-badges/assets/cozy/available/modrinth_vector.svg" alt="Download on Modrinth." height=64></a>
 
+## About Tablesaw
+Tablesaw is a mod that adds a sawmill for cutting wooden blocks with. Its pretty similar to the vanilla stonecutter in function and Tablesaw will make it far easier to utilize wooden blocks.
 
 ## How to integrate Tablesaw into your mod
 

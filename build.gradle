@@ -80,7 +80,6 @@ publishing {
 	}
 }
 
-/*
 modrinth {
 	token = System.getenv("MODRINTH_TOKEN")
 	projectId = "tablesaw"
@@ -97,4 +96,4 @@ modrinth {
 		required.project "qsl"
 	}
 }
-*/
+

@@ -52,3 +52,6 @@ Example of adding a recipe that takes more than one item and outputs more than o
     }
 }
 ```
+
+## Contributors
+![contributors](https://contrib.rocks/image?repo=woodiertexas/architecture-extensions)

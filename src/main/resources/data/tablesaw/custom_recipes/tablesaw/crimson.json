@@ -1,0 +1,87 @@
+[
+	{
+		"input": {
+			"item": "minecraft:crimson_planks",
+			"count": 3
+		},
+		"result": {
+			"item": "minecraft:crimson_stairs",
+			"count": 2
+		}
+	},
+	{
+		"input": "minecraft:crimson_planks",
+		"result": {
+			"item": "minecraft:crimson_slab",
+			"count": 2
+		}
+	},
+	{
+		"input": {
+			"item": "minecraft:crimson_planks",
+			"count": 2
+		},
+		"result": "minecraft:crimson_door"
+	},
+	{
+		"input": {
+			"item": "minecraft:crimson_planks",
+			"count": 5
+		},
+		"result": {
+			"item": "minecraft:crimson_fence",
+			"count": 3
+		}
+	},
+	{
+		"input": {
+			"item": "minecraft:crimson_planks",
+			"count": 4
+		},
+		"result": "minecraft:crimson_fence_gate"
+	},
+	{
+		"input": "minecraft:crimson_planks",
+		"result": "minecraft:crimson_button"
+	},
+	{
+		"input": {
+			"item": "minecraft:crimson_planks",
+			"count": 2
+		},
+		"result": "minecraft:crimson_pressure_plate"
+	},
+	{
+		"input": {
+			"item": "minecraft:crimson_planks",
+			"count": 3
+		},
+		"result": "minecraft:crimson_trapdoor"
+	},
+	{
+		"input": {
+			"item": "minecraft:crimson_planks",
+			"count": 2
+		},
+		"result": "minecraft:crimson_sign"
+	},
+
+
+	{
+		"input": {
+			"item": "minecraft:crimson_planks",
+			"count": 3
+		},
+		"result": {
+			"item": "minecraft:bowl",
+			"count": 4
+		}
+	},
+	{
+		"input": {
+			"item": "minecraft:crimson_planks",
+			"count": 8
+		},
+		"result": "minecraft:chest"
+	}
+]

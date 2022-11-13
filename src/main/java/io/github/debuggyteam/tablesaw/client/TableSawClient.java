@@ -3,8 +3,6 @@ package io.github.debuggyteam.tablesaw.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.debuggyteam.tablesaw.TableSawBlock;
-import net.minecraft.block.Block;
 import net.minecraft.client.render.RenderLayer;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
@@ -40,6 +38,22 @@ public class TableSawClient implements ClientModInitializer {
 			// Read data in and freeze it
 			final List<TableSawRecipe> recipes = new ArrayList<>();
 			int count = buf.readVarInt();
+			if (count == 0) {
+				/*
+				 * We sent a recipes packet with zero recipes in it at the start of recipe sync to let the client know
+				 * to zap all recipes. We're the client right now. Zap all recipes from the client thread and exit.
+				 */
+				client.execute(() -> {
+					TableSawRecipes tsr = TableSawRecipes.clientInstance();
+					tsr.clearAllRecipes();
+					
+					if (client.player.currentScreenHandler instanceof TableSawScreenHandler) {
+						client.setScreen(null); // Kick the player out of the tablesaw screen
+					}
+				});
+				return;
+			}
+			
 			for(int i = 0; i < count; i++) {
 				String id = buf.readString();
 				Item inputItem = Registry.ITEM.get(new Identifier(id));

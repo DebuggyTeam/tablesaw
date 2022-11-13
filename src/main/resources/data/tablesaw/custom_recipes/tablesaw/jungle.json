@@ -1,0 +1,94 @@
+[
+	{
+		"input": {
+			"item": "minecraft:jungle_planks",
+			"count": 3
+		},
+		"result": {
+			"item": "minecraft:jungle_stairs",
+			"count": 2
+		}
+	},
+	{
+		"input": "minecraft:jungle_planks",
+		"result": {
+			"item": "minecraft:jungle_slab",
+			"count": 2
+		}
+	},
+	{
+		"input": {
+			"item": "minecraft:jungle_planks",
+			"count": 2
+		},
+		"result": "minecraft:jungle_door"
+	},
+	{
+		"input": {
+			"item": "minecraft:jungle_planks",
+			"count": 5
+		},
+		"result": {
+			"item": "minecraft:jungle_fence",
+			"count": 3
+		}
+	},
+	{
+		"input": {
+			"item": "minecraft:jungle_planks",
+			"count": 4
+		},
+		"result": "minecraft:jungle_fence_gate"
+	},
+	{
+		"input": "minecraft:jungle_planks",
+		"result": "minecraft:jungle_button"
+	},
+	{
+		"input": {
+			"item": "minecraft:jungle_planks",
+			"count": 2
+		},
+		"result": "minecraft:jungle_pressure_plate"
+	},
+	{
+		"input": {
+			"item": "minecraft:jungle_planks",
+			"count": 3
+		},
+		"result": "minecraft:jungle_trapdoor"
+	},
+	{
+		"input": {
+			"item": "minecraft:jungle_planks",
+			"count": 2
+		},
+		"result": "minecraft:jungle_sign"
+	},
+
+
+	{
+		"input": {
+			"item": "minecraft:jungle_planks",
+			"count": 3
+		},
+		"result": {
+			"item": "minecraft:bowl",
+			"count": 4
+		}
+	},
+	{
+		"input": {
+			"item": "minecraft:jungle_planks",
+			"count": 8
+		},
+		"result": "minecraft:chest"
+	},
+	{
+		"input": {
+			"item": "minecraft:jungle_planks",
+			"count": 5
+		},
+		"result": "minecraft:jungle_boat"
+	}
+]

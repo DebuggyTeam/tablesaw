@@ -11,7 +11,7 @@ Follow the instructional gif below to learn how to use the tablesaw.
 ![test](https://cdn.modrinth.com/data/EPt60DPT/images/fa8e02e8897e1865b7b9b677e7779ae6001a3747.gif)
 
 ## How to integrate Tablesaw into your mod
-![Read here to learn how to add new recipes via JSON](https://github.com/DebuggyTeam/tablesaw/wiki/How-to-use-Tablesaw-in-your-mod)
+![Read here](https://github.com/DebuggyTeam/tablesaw/wiki/How-to-integrate-Tablesaw-into-your-mod) to learn how to add tablesaw recipes to your project.
 
 ## Contributors
 ![contributors](https://contrib.rocks/image?repo=debuggyteam/tablesaw)

@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.render.RenderLayer;
+
+import org.quiltmc.config.api.WrappedConfig;
 import org.quiltmc.loader.api.ModContainer;
+import org.quiltmc.loader.api.config.QuiltConfig;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
 import org.quiltmc.qsl.block.extensions.api.client.BlockRenderLayerMap;
 import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
@@ -25,9 +28,15 @@ import net.minecraft.util.registry.Registry;
 import static io.github.debuggyteam.tablesaw.TableSaw.TABLESAW;
 
 public class TableSawClient implements ClientModInitializer {
-
+	
+	public static ClientSettings config;
+	
 	@Override
 	public void onInitializeClient(ModContainer mod) {
+		
+		config = QuiltConfig.create(TableSaw.MODID, "client", ClientSettings.class);
+		
+		
 		HandledScreens.register(TableSaw.TABLESAW_SCREEN_HANDLER, (TableSawScreenHandler gui, PlayerInventory inventory, Text title) -> new TableSawScreen(gui, inventory, title));
 		
 		ClientPlayNetworking.registerGlobalReceiver(TableSaw.TABLESAW_CHANNEL, (client, handler, buf, sender) -> {

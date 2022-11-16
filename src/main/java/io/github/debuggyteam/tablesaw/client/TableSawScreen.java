@@ -237,9 +237,10 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 				this.client.getItemRenderer().renderInGuiWithOverrides(stack, x + (xi * RECIPE_SLOT_WIDTH), y + (yi * RECIPE_SLOT_HEIGHT) + 2);
 				
 				String label = switch( TableSawClient.config.iconRatios ) {
-					case NONE -> null;
-					case RATIO -> (recipe.getQuantity() < 1) ? null : recipe.getQuantity() + ":" + stack.getCount();
-					case OUTPUT_COUNT -> (recipe.getResult().getCount() < 2) ? null : Integer.toString(recipe.getResult().getCount());
+					case NONE -> "";
+					case RATIO -> (recipe.getQuantity() < 2) ? null : recipe.getQuantity() + ":" + stack.getCount();
+					case STRICT_RATIO -> recipe.getQuantity() + ":" + stack.getCount();
+					case OUTPUT_COUNT -> null; //(recipe.getResult().getCount() < 2) ? null : Integer.toString(recipe.getResult().getCount());
 				};
 				
 				

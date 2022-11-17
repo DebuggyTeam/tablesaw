@@ -21,6 +21,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -235,10 +236,13 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 				ItemStack stack = list.get(curSlot).getResult();
 				this.client.getItemRenderer().renderInGuiWithOverrides(stack, x + (xi * RECIPE_SLOT_WIDTH), y + (yi * RECIPE_SLOT_HEIGHT) + 2);
 				
-				String label = null;
-				if (recipe.getQuantity() != 1) {
-					label = recipe.getQuantity() + ":" + stack.getCount();
-				}
+				String label = switch( TableSawClient.config.iconRatios ) {
+					case NONE -> "";
+					case RATIO -> (recipe.getQuantity() < 2) ? null : recipe.getQuantity() + ":" + stack.getCount();
+					case STRICT_RATIO -> recipe.getQuantity() + ":" + stack.getCount();
+					case OUTPUT_COUNT -> null; //(recipe.getResult().getCount() < 2) ? null : Integer.toString(recipe.getResult().getCount());
+				};
+				
 				
 				this.itemRenderer.renderGuiItemOverlay(this.textRenderer, stack, x + (xi * RECIPE_SLOT_WIDTH), y + (yi * RECIPE_SLOT_HEIGHT) + 2, label);
 				
@@ -264,7 +268,25 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 					int hoveredSlot = (scrollOffset * 4) + (gridY * 4) + gridX;
 					List<TableSawRecipe> list = this.getClientsideRecipes();
 					if (hoveredSlot >= 0 && hoveredSlot < list.size()) {
-						renderTooltip(matrices, list.get(hoveredSlot).getResult(), x, y);
+						
+						if (TableSawClient.config.ratioTooltip) {
+							ItemStack input = this.handler.input.getStack(0);
+							ItemStack output = list.get(hoveredSlot).getResult();
+							
+							List<Text> text = this.getTooltipFromItem(output);
+							
+							int sourceCount = list.get(hoveredSlot).getQuantity();
+							Text sourceName = Text.empty().append(input.getName()).formatted(input.getRarity().formatting);
+							Text destName = Text.empty().append(output.getName()).formatted(output.getRarity().formatting);
+							
+							MutableText recipeLine = Text.translatable("container.tablesaw.tablesaw.ratio", sourceCount, sourceName, output.getCount(), destName);
+							text.set(0, Text.empty().append(recipeLine));
+							
+							renderTooltip(matrices, text, x, y);
+						} else {
+							renderTooltip(matrices, list.get(hoveredSlot).getResult(), x, y);
+						}
+						
 					}
 				}
 			}

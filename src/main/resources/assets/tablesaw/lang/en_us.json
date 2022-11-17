@@ -1,4 +1,5 @@
 {
   "container.tablesaw.tablesaw": "Table Saw",
+  "container.tablesaw.tablesaw.ratio": "%s %s → %s %s",
   "block.tablesaw.tablesaw": "Table Saw"
 }

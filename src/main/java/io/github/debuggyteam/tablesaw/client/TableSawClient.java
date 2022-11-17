@@ -94,5 +94,4 @@ public class TableSawClient implements ClientModInitializer {
 
 		BlockRenderLayerMap.put(RenderLayer.getCutout(), TABLESAW);
 	}
-
 }

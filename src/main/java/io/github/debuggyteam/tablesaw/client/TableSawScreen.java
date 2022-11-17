@@ -67,8 +67,6 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	public TableSawScreen(TableSawScreenHandler screenHandler, PlayerInventory playerInventory, Text text) {
 		super(screenHandler, playerInventory, text);
 		screenHandler.setListenerScreen(this::onContentsChanged);
-		
-		
 	}
 	
 	@Override
@@ -109,7 +107,6 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 		
 		this.renderRecipeBackground(matrices, mouseX, mouseY, this.x + RECIPE_GRID_X, this.y + RECIPE_GRID_Y, this.scrollOffset);
 		this.renderRecipeIcons(x + RECIPE_GRID_X, y + RECIPE_GRID_Y, this.scrollOffset);
-		
 	}
 	
 	public void onContentsChanged() {
@@ -250,7 +247,6 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 				if (curSlot >= list.size()) break loop;
 			}
 		}
-
 	}
 
 	@Override

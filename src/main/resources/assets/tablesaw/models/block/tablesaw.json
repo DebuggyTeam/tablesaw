@@ -2,11 +2,11 @@
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:block/block",
 	"textures": {
-		"1": "minecraft:block/stripped_oak_log",
-		"2": "minecraft:block/stonecutter_saw",
-		"3": "minecraft:block/stonecutter_top",
-		"4": "minecraft:block/stonecutter_side",
-		"particle": "minecraft:block/stripped_oak_log"
+		"1": "block/stripped_oak_log",
+		"2": "block/stonecutter_saw",
+		"3": "block/stonecutter_top",
+		"4": "block/stonecutter_side",
+		"particle": "block/stripped_oak_log"
 	},
 	"elements": [
 		{
@@ -73,13 +73,21 @@
 			}
 		},
 		{
-			"from": [0, 15, 0],
-			"to": [16, 15.5, 16],
+			"from": [8, 6, 1],
+			"to": [8, 14, 15],
 			"faces": {
-				"north": {"uv": [0, 7, 16, 7.5], "texture": "#4", "cullface": "north"},
-				"east": {"uv": [0, 7, 16, 7.5], "texture": "#4", "cullface": "east"},
-				"south": {"uv": [0, 7, 16, 7.5], "texture": "#4", "cullface": "south"},
-				"west": {"uv": [0, 7, 16, 7.5], "texture": "#4", "cullface": "west"},
+				"east": {"uv": [15, 16, 1, 8], "texture": "#2"},
+				"west": {"uv": [15, 16, 1, 8], "texture": "#2"}
+			}
+		},
+		{
+			"from": [0, 15, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 7, 16, 8], "texture": "#4", "cullface": "north"},
+				"east": {"uv": [0, 7, 16, 8], "texture": "#4", "cullface": "east"},
+				"south": {"uv": [0, 7, 16, 8], "texture": "#4", "cullface": "south"},
+				"west": {"uv": [0, 7, 16, 8], "texture": "#4", "cullface": "west"},
 				"up": {"uv": [0, 0, 16, 16], "rotation": 90, "texture": "#3"}
 			}
 		}

@@ -2,11 +2,11 @@
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:block/block",
 	"textures": {
-		"1": "block/stripped_oak_log",
-		"2": "block/stonecutter_saw",
-		"3": "block/stonecutter_top",
-		"4": "block/stonecutter_side",
-		"particle": "block/stripped_oak_log"
+		"1": "minecraft:block/stripped_oak_log",
+		"2": "minecraft:block/stonecutter_saw",
+		"3": "minecraft:block/stonecutter_top",
+		"4": "minecraft:block/stonecutter_side",
+		"particle": "minecraft:block/stripped_oak_log"
 	},
 	"elements": [
 		{

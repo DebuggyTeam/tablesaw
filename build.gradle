@@ -81,6 +81,7 @@ modrinth {
 	token = System.getenv("MODRINTH_TOKEN")
 	projectId = "tablesaw"
 	uploadFile = remapJar
+	additionalFiles = [sourcesJar]
 	gameVersions = [libs.versions.minecraft.get()]
 	loaders = ["quilt"]
 	def ref = System.getenv("GITHUB_REF")

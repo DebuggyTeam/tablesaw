@@ -85,7 +85,9 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 
 				ClientPlayNetworking.send(TableSaw.TABLESAW_CHANNEL, buf);
 
-				MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(TableSaw.TABLESAW_SOUND_EVENT, 1.0F));
+				if (this.handler.getSlot(0) != null) {
+					MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(TableSaw.TABLESAW_SOUND_EVENT, 1.0F));
+				}
 			}
 		};
 

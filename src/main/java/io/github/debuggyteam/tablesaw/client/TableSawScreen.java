@@ -1,6 +1,7 @@
 package io.github.debuggyteam.tablesaw.client;
 
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.client.gui.widget.ButtonListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -86,7 +87,9 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 				ClientPlayNetworking.send(TableSaw.TABLESAW_CHANNEL, buf);
 
 				if (this.handler.getSlot(0) != null) {
-					MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(TableSaw.TABLESAW_SOUND_EVENT, 1.0F));
+					Random r = new Random();
+					float randomPitch = 0.85f + r.nextFloat() * (1.15f - 0.85f);
+					MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(TableSaw.TABLESAW_SOUND_EVENT, randomPitch));
 				}
 			}
 		};

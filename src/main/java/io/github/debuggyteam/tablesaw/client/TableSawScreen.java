@@ -280,7 +280,7 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 					int hoveredSlot = (scrollOffset * 4) + (gridY * 4) + gridX;
 					List<TableSawRecipe> list = this.getClientsideRecipes();
 					if (hoveredSlot >= 0 && hoveredSlot < list.size()) {
-					
+						
 						if (TableSawClient.config.ratioTooltip) {
 							ItemStack input = this.handler.input.getStack(0);
 							ItemStack output = list.get(hoveredSlot).getResult();
@@ -290,7 +290,7 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 							int sourceCount = list.get(hoveredSlot).getQuantity();
 							Text sourceName = Text.empty().append(input.getName()).formatted(input.getRarity().formatting);
 							Text destName = Text.empty().append(output.getName()).formatted(output.getRarity().formatting);
-
+							
 							MutableText recipeLine = Text.translatable("container.tablesaw.tablesaw.ratio", sourceCount, sourceName, output.getCount(), destName);
 							text.set(0, Text.empty().append(recipeLine));
 							

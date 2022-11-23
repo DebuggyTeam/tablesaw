@@ -1,7 +1,11 @@
 package io.github.debuggyteam.tablesaw.client;
 
 import java.util.List;
+import java.util.Random;
 
+import net.minecraft.client.gui.widget.ButtonListWidget;
+import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.sound.SoundManager;
 import org.quiltmc.qsl.networking.api.PacketByteBufs;
 import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 
@@ -73,20 +77,33 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	protected void init() {
 		super.init();
 		
-		this.addDrawableChild(new TexturedButtonWidget(x + SAW_BUTTON_X, y + SAW_BUTTON_Y, SAW_BUTTON_WIDTH, SAW_BUTTON_HEIGHT, SAW_BUTTON_U, SAW_BUTTON_V, 16, BUTTON_TEXTURE, 16, 32,
-				(button) -> {
-					if (!selectedItem.isEmpty()) {
-						PacketByteBuf buf = PacketByteBufs.create();
-						buf.writeVarInt(TableSaw.MESSAGE_ENGAGE_TABLESAW);
-						buf.writeBoolean(HandledScreen.hasShiftDown()); // ask the server to multicraft if true
-						buf.writeItemStack(selectedItem);
-						
-						ClientPlayNetworking.send(TableSaw.TABLESAW_CHANNEL, buf);
-						
-					}
-				}));
+		ButtonWidget.PressAction onClick = (button) -> {
+			if (!selectedItem.isEmpty()) {
+				PacketByteBuf buf = PacketByteBufs.create();
+				buf.writeVarInt(TableSaw.MESSAGE_ENGAGE_TABLESAW);
+				buf.writeBoolean(HandledScreen.hasShiftDown()); // ask the server to multicraft if true
+				buf.writeItemStack(selectedItem);
+				
+				ClientPlayNetworking.send(TableSaw.TABLESAW_CHANNEL, buf);
+				
+				if (this.handler.getSlot(0) != null) {
+					Random r = new Random();
+					float randomPitch = 0.85f + r.nextFloat() * (1.15f - 0.85f);
+					MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(TableSaw.TABLESAW_SOUND_EVENT, randomPitch));
+				}
+			}
+		};
+		
+		TexturedButtonWidget tablesawUseButton = new TexturedButtonWidget(x + SAW_BUTTON_X, y + SAW_BUTTON_Y, SAW_BUTTON_WIDTH, SAW_BUTTON_HEIGHT, SAW_BUTTON_U, SAW_BUTTON_V, 16, BUTTON_TEXTURE, 16, 32, onClick) {
+			@Override
+			public void playDownSound(SoundManager soundManager) {
+				// 👻
+			}
+		};
+		
+		this.addDrawableChild(tablesawUseButton);
 	}
-
+	
 	@Override
 	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 		super.render(matrices, mouseX, mouseY, delta);
@@ -186,7 +203,7 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 			this.scrollAmount = MathHelper.clamp(this.scrollAmount - scrollDelta, 0.0F, 1.0F);
 			this.scrollOffset = (int) (scrollAmount * maxScroll + 0.5f);
 		}
-
+		
 		return true;
 	}
 	
@@ -240,7 +257,6 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 					case OUTPUT_COUNT -> null; //(recipe.getResult().getCount() < 2) ? null : Integer.toString(recipe.getResult().getCount());
 				};
 				
-				
 				this.itemRenderer.renderGuiItemOverlay(this.textRenderer, stack, x + (xi * RECIPE_SLOT_WIDTH), y + (yi * RECIPE_SLOT_HEIGHT) + 2, label);
 				
 				curSlot++;
@@ -248,7 +264,7 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 			}
 		}
 	}
-
+	
 	@Override
 	protected void drawMouseoverTooltip(MatrixStack matrices, int x, int y) {
 		super.drawMouseoverTooltip(matrices, x, y);
@@ -282,7 +298,6 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 						} else {
 							renderTooltip(matrices, list.get(hoveredSlot).getResult(), x, y);
 						}
-						
 					}
 				}
 			}
@@ -300,13 +315,11 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	private boolean shouldScroll() {
 		return recipeCount() > 12;
 	}
-
+	
 	protected int getMaxScroll() {
 		int baseScroll = (int) Math.ceil(recipeCount() / 4.0); // one scroll increment per line of 4 recipes...
 		baseScroll -= 3; if (baseScroll < 0) baseScroll = 0;    // ...minus the first screen.
 		
 		return baseScroll;
 	}
-	
-	
 }

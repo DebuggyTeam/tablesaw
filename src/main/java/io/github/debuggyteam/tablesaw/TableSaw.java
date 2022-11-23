@@ -7,6 +7,7 @@ import net.minecraft.resource.ResourceType;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -30,6 +31,11 @@ public class TableSaw implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("TableSaw");
 
     public static final TableSawBlock TABLESAW = new TableSawBlock(QuiltBlockSettings.of(Material.WOOD).nonOpaque());
+
+    /** Register a sound for the tablesaw to use */
+    public static final Identifier TABLESAW_SFX = new Identifier(MODID, "tablesaw_sfx");
+    public static final SoundEvent TABLESAW_SOUND_EVENT = new SoundEvent(TABLESAW_SFX);
+
     public static final ScreenHandlerType<TableSawScreenHandler> TABLESAW_SCREEN_HANDLER = new ScreenHandlerType<>((syncId, inventory) -> new TableSawScreenHandler(syncId, inventory, ScreenHandlerContext.EMPTY));
 
     /** Creates an identifier with this mod as the namespace */
@@ -46,6 +52,8 @@ public class TableSaw implements ModInitializer {
         Registry.register(Registry.BLOCK, new Identifier(MODID, "tablesaw"), TABLESAW);
         Registry.register(Registry.ITEM, new Identifier(MODID, "tablesaw"),
                 new BlockItem(TABLESAW, new QuiltItemSettings().group(ItemGroup.DECORATIONS)));
+
+        Registry.register(Registry.SOUND_EVENT, TableSaw.TABLESAW_SFX, TABLESAW_SOUND_EVENT);
         
         // Receives serverside notice that the tablesaw craft button is clicked
         ServerPlayNetworking.registerGlobalReceiver(TABLESAW_CHANNEL, new TableSawServerReceiver());

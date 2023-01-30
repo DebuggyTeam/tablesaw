@@ -8,8 +8,8 @@ archivesBaseName = project.archives_base_name
 version = project.version
 group = project.maven_group
 
-repositories {	
-	// something
+repositories {
+	maven { url "https://maven.terraformersmc.com/" }
 }
 
 // All the dependencies are declared at gradle/libs.version.toml and referenced with "libs.<id>"
@@ -23,6 +23,9 @@ dependencies {
 	// Quilted Fabric API will automatically pull in the correct QSL version.
 	modImplementation libs.quilted.fabric.api
 	// modImplementation libs.bundles.quilted.fabric.api // If you wish to use Fabric API's deprecated modules, you can replace the above line with this one
+
+	modCompileOnly variantOf(libs.emi) { classifier 'api' }
+	modRuntimeOnly libs.emi
 }
 
 processResources {

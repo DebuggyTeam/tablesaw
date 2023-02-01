@@ -13,9 +13,8 @@ import io.github.debuggyteam.tablesaw.api.TableSawRecipe;
 import net.minecraft.util.Identifier;
 
 public class TableSawEmiIntegration implements EmiPlugin {
-    public static final Identifier TABLESAW_SPRITE_SHEET = new Identifier(TableSaw.MODID, "textures/gui/emi_simplified_textures.png");
     public static final EmiStack TABLESAW_BLOCK = EmiStack.of(TableSaw.TABLESAW);
-    public static final EmiRecipeCategory TABLESAW_CATEGORY = new EmiRecipeCategory(new Identifier(TableSaw.MODID, "tablesaw"), new EmiTexture(TABLESAW_SPRITE_SHEET, 0, 0, 16, 16));
+    public static final EmiRecipeCategory TABLESAW_CATEGORY = new EmiRecipeCategory(new Identifier(TableSaw.MODID, "tablesaw"), EmiStack.of(TableSaw.TABLESAW));
     
     @Override
     public void register(EmiRegistry registry) {

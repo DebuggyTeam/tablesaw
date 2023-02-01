@@ -1,4 +1,4 @@
-package io.github.debuggyteam.tablesaw.client;
+package io.github.debuggyteam.tablesaw;
 
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;

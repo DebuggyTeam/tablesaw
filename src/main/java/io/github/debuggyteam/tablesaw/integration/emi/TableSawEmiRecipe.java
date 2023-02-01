@@ -1,4 +1,4 @@
-package io.github.debuggyteam.integration.emi;
+package io.github.debuggyteam.tablesaw.integration.emi;
 
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
@@ -6,7 +6,6 @@ import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
-import io.github.debuggyteam.integration.emi.TableSawEmiIntegration;
 import io.github.debuggyteam.tablesaw.api.TableSawRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;

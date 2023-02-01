@@ -61,7 +61,5 @@ public class TableSawEmiRecipe implements EmiRecipe {
         widgets.addTexture(EmiTexture.EMPTY_ARROW, 21, 1);
         widgets.addSlot(input, 0, 0);
         widgets.addSlot(output, 58, 0).recipeContext(this);
-        
-        widgets.addDrawable(0, 0, 512, 512, "a what now?")
     }
 }

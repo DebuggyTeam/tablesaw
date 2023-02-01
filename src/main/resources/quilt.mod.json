@@ -22,7 +22,7 @@
 		"entrypoints": {
 			"init": "io.github.debuggyteam.tablesaw.TableSaw",
 			"client_init": "io.github.debuggyteam.tablesaw.client.TableSawClient",
-			"emi": "io.github.debuggyteam.tablesaw.TableSawEmiIntegration"
+			"emi": "io.github.debuggyteam.tablesaw.integration.emi.TableSawEmiIntegration"
 		},
 		"depends": [
 			{

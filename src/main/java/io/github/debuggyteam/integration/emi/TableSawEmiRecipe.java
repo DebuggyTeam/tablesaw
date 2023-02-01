@@ -1,4 +1,4 @@
-package io.github.debuggyteam.tablesaw;
+package io.github.debuggyteam.integration.emi;
 
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
@@ -6,22 +6,25 @@ import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
-import io.github.debuggyteam.tablesaw.TableSawEmiIntegration;
-import io.github.debuggyteam.tablesaw.TableSawRecipes;
-import net.minecraft.recipe.Recipe;
+import io.github.debuggyteam.integration.emi.TableSawEmiIntegration;
+import io.github.debuggyteam.tablesaw.api.TableSawRecipe;
+import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class TableSawEmiRecipe implements EmiRecipe {
-    private final Identifier id;
+    EmiIngredient input;
+    EmiStack output;
+    ItemStack itemStack;
 
     // somehow get the IDs for the tablesaw recipes
-    public TableSawEmiRecipe(Recipe recipe) {
-        this.id = recipe.getId();
-        this.input = List.of(EmiIngredient.of(recipe.getIngredients().get(0)));
-        this.output = List.of(EmiStack.of(recipe.getOutput()));
+    public TableSawEmiRecipe(TableSawRecipe recipe) {
+        itemStack = new ItemStack(recipe.getInput(), recipe.getResult().getCount());
+        input = EmiIngredient.of(Ingredient.ofStacks(itemStack));
+        output = EmiStack.of(recipe.getResult());
     }
 
     @Override
@@ -31,17 +34,17 @@ public class TableSawEmiRecipe implements EmiRecipe {
 
     @Override
     public @Nullable Identifier getId() {
-        return id;
+        return null;
     }
 
     @Override
     public List<EmiIngredient> getInputs() {
-        return input;
+        return List.of(input);
     }
 
     @Override
     public List<EmiStack> getOutputs() {
-        return output;
+        return List.of(output);
     }
 
     @Override
@@ -57,7 +60,9 @@ public class TableSawEmiRecipe implements EmiRecipe {
     @Override
     public void addWidgets(WidgetHolder widgets) {
         widgets.addTexture(EmiTexture.EMPTY_ARROW, 21, 1);
-        widgets.addSlot(input.get(0), 0, 0);
-        widgets.addSlot(output.get(0), 58, 0).recipeContext(this);
+        widgets.addSlot(input, 0, 0);
+        widgets.addSlot(output, 58, 0).recipeContext(this);
+        
+        widgets.addDrawable(0, 0, 512, 512, "a what now?")
     }
 }

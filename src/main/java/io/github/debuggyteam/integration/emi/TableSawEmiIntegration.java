@@ -1,10 +1,11 @@
-package io.github.debuggyteam.tablesaw;
+package io.github.debuggyteam.integration.emi;
 
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiStack;
+import io.github.debuggyteam.tablesaw.TableSaw;
 import net.minecraft.util.Identifier;
 
 public class TableSawEmiIntegration implements EmiPlugin {

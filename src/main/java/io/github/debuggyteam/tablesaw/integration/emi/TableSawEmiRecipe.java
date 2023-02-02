@@ -17,9 +17,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class TableSawEmiRecipe implements EmiRecipe {
-    Identifier id;
-    EmiIngredient input;
-    EmiStack output;
+    private Identifier id;
+    private EmiIngredient input;
+    private EmiStack output;
 
     // somehow get the IDs for the tablesaw recipes
     public TableSawEmiRecipe(TableSawRecipe recipe) {

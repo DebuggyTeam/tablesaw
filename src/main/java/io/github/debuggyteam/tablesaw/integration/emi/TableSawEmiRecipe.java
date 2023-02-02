@@ -46,7 +46,7 @@ public class TableSawEmiRecipe implements EmiRecipe {
 
     @Override
     public @Nullable Identifier getId() {
-        return null;
+        return id;
     }
 
     @Override

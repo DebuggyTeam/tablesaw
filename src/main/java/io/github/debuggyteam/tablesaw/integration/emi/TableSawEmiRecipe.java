@@ -17,14 +17,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class TableSawEmiRecipe implements EmiRecipe {
-    private Identifier id;
-    private EmiIngredient input;
-    private EmiStack output;
+    private final Identifier id;
+    private final EmiIngredient input;
+    private final EmiStack output;
 
     // somehow get the IDs for the tablesaw recipes
     public TableSawEmiRecipe(TableSawRecipe recipe) {
-        ItemStack itemStack = new ItemStack(recipe.getInput(), recipe.getResult().getCount());
-        input = EmiIngredient.of(Ingredient.ofStacks(itemStack));
+        ItemStack itemStack = new ItemStack(recipe.getInput(), recipe.getQuantity()); // The item count here doesn't really matter, it will be handled below
+        input = EmiIngredient.of(Ingredient.ofStacks(itemStack), recipe.getQuantity());
         output = EmiStack.of(recipe.getResult());
         id = new Identifier(
                 TableSaw.MODID,
@@ -75,7 +75,7 @@ public class TableSawEmiRecipe implements EmiRecipe {
         widgets.addSlot(input, 0, 0);
         widgets.addSlot(output, 58, 0).recipeContext(this);
     }
-    
+
     private String mangle(Identifier id) {
         return id.getNamespace() + "_" + id.getPath();
     }

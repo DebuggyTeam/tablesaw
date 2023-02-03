@@ -23,15 +23,15 @@ public class TableSawEmiRecipe implements EmiRecipe {
 
     // somehow get the IDs for the tablesaw recipes
     public TableSawEmiRecipe(TableSawRecipe recipe) {
-        ItemStack itemStack = new ItemStack(recipe.getInput(), recipe.getQuantity()); // The item count here doesn't really matter, it will be handled below
-        input = EmiIngredient.of(Ingredient.ofStacks(itemStack), recipe.getQuantity());
+        ItemStack inputItemStack = new ItemStack(recipe.getInput(), recipe.getQuantity()); // The item count here doesn't really matter, it will be handled below
+        input = EmiIngredient.of(Ingredient.ofStacks(inputItemStack), recipe.getQuantity());
         output = EmiStack.of(recipe.getResult());
         id = new Identifier(
                 TableSaw.MODID,
                 "/" +
-                        mangle(Registry.ITEM.getId(itemStack.getItem())) +
+                        mangle(Registry.ITEM.getId(inputItemStack.getItem())) +
                         "_" +
-                        itemStack.getCount() +
+                        inputItemStack.getCount() +
                         "__" +
                         mangle(output.getId()) +
                         "_" +

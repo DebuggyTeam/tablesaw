@@ -20,8 +20,8 @@ import net.minecraft.item.ItemStack;
 public class TableSawRecipes {
 	
 	@Environment(EnvType.CLIENT)
-	private static TableSawRecipes CLIENT_INSTANCE = new TableSawRecipes();
-	private static TableSawRecipes SERVER_INSTANCE = new TableSawRecipes();
+	private static final TableSawRecipes CLIENT_INSTANCE = new TableSawRecipes();
+	private static final TableSawRecipes SERVER_INSTANCE = new TableSawRecipes();
 	
 	@Environment(EnvType.CLIENT)
 	public static TableSawRecipes clientInstance() {

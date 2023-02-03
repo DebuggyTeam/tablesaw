@@ -1,5 +1,7 @@
 {
   "container.tablesaw.tablesaw": "Table de scierie",
   "container.tablesaw.tablesaw.ratio": "%s %s → %s %s",
-  "block.tablesaw.tablesaw": "Table de scierie"
+  "block.tablesaw.tablesaw": "Table de scierie",
+
+  "emi.category.tablesaw.tablesaw": "Table de scierie"
 }

@@ -1,22 +1,11 @@
 package io.github.debuggyteam.tablesaw.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.client.render.RenderLayer;
-
-import org.quiltmc.config.api.WrappedConfig;
-import org.quiltmc.loader.api.ModContainer;
-import org.quiltmc.loader.api.config.QuiltConfig;
-import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
-import org.quiltmc.qsl.block.extensions.api.client.BlockRenderLayerMap;
-import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
-
 import io.github.debuggyteam.tablesaw.TableSaw;
 import io.github.debuggyteam.tablesaw.TableSawRecipes;
 import io.github.debuggyteam.tablesaw.TableSawScreenHandler;
 import io.github.debuggyteam.tablesaw.api.TableSawRecipe;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,6 +13,14 @@ import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.quiltmc.loader.api.ModContainer;
+import org.quiltmc.loader.api.config.QuiltConfig;
+import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
+import org.quiltmc.qsl.block.extensions.api.client.BlockRenderLayerMap;
+import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static io.github.debuggyteam.tablesaw.TableSaw.TABLESAW;
 
@@ -91,7 +88,7 @@ public class TableSawClient implements ClientModInitializer {
 				for(TableSawRecipe sawRecipe : recipes) tsr.registerRecipe(sawRecipe);
 			});
 		});
-
+		
 		BlockRenderLayerMap.put(RenderLayer.getCutout(), TABLESAW);
 	}
 }

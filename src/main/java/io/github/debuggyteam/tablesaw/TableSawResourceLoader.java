@@ -1,24 +1,7 @@
 package io.github.debuggyteam.tablesaw;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Nullable;
-
-import org.jetbrains.annotations.NotNull;
-import org.quiltmc.loader.api.QuiltLoader;
-import org.quiltmc.qsl.resource.loader.api.reloader.SimpleSynchronousResourceReloader;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
+import com.google.gson.*;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-
 import io.github.debuggyteam.tablesaw.api.TableSawAPI;
 import io.github.debuggyteam.tablesaw.api.TableSawCompat;
 import io.github.debuggyteam.tablesaw.api.TableSawRecipe;
@@ -31,6 +14,16 @@ import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.jetbrains.annotations.NotNull;
+import org.quiltmc.loader.api.QuiltLoader;
+import org.quiltmc.qsl.resource.loader.api.reloader.SimpleSynchronousResourceReloader;
+
+import javax.annotation.Nullable;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class TableSawResourceLoader implements SimpleSynchronousResourceReloader {
 	public static final Identifier ID = TableSaw.identifier("recipe_loader");
@@ -122,15 +115,15 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 	 * @return If the JsonObject represents a valid TableSaw recipe, that recipe. If any error happened, returns null with no side effects.
 	 */
 	protected @Nullable TableSawRecipe parseRecipe(JsonObject obj) {
-
+		
 		String itemId = null;
 		Integer count = null;
-
+		
 		JsonObject inputObject = getObject(obj, "input");
 		if (inputObject != null) {
 			itemId = getString(inputObject, "item");
 			count = getInteger(inputObject, "count");
-
+			
 			if (itemId == null) return null;
 			if (count == null) count = 1;
 		} else {
@@ -138,24 +131,24 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 			if (itemId == null) return null;
 			count = 1;
 		}
-
+		
 		Item inputItem = Registry.ITEM.get(new Identifier(itemId));
 		if (inputItem == Items.AIR) return null;
-
+		
 		ItemStack resultItemStack = ItemStack.EMPTY;
-
+		
 		JsonObject resultObject = getObject(obj, "result");
 		if (resultObject != null) {
 			String resultId = getString(resultObject, "item");
 			if (resultId == null) return null;
 			Item resultItem = Registry.ITEM.get(new Identifier(resultId));
 			if (resultItem == Items.AIR) return null;
-
+			
 			Integer resultCount = getInteger(resultObject, "count");
 			if (resultCount == null) resultCount = 1;
-
+			
 			resultItemStack = new ItemStack(resultItem, resultCount);
-
+			
 			JsonObject tagObject = getObject(resultObject, "tag");
 			if (tagObject != null) {
 				try {
@@ -165,23 +158,23 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 					e.printStackTrace();
 				}
 			}
-
+			
 		} else {
 			String resultId = getString(obj, "result");
 			if (resultId == null) return null;
 			Item resultItem = Registry.ITEM.get(new Identifier(resultId));
 			if (resultItem == Items.AIR) return null;
-
+			
 			resultItemStack = new ItemStack(resultItem);
 		}
-
+		
 		TableSawRecipe result = new TableSawRecipe(inputItem, count, resultItemStack);
 		return result;
 	}
-
+	
 	private @Nullable JsonArray getArray(@Nullable JsonObject obj, String key) {
 		if (obj == null) return null;
-
+		
 		JsonElement e = obj.get(key);
 		if (e instanceof JsonArray array) {
 			return array;
@@ -189,10 +182,10 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 			return null;
 		}
 	}
-
+	
 	private @Nullable String getString(@Nullable JsonObject obj, String key) {
 		if (obj == null) return null;
-
+		
 		JsonElement e = obj.get(key);
 		if (e instanceof JsonPrimitive prim) {
 			return (prim.isString()) ? prim.getAsString() : null;
@@ -200,10 +193,10 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 			return null;
 		}
 	}
-
+	
 	private @Nullable Integer getInteger(@Nullable JsonObject obj, String key) {
 		if (obj == null) return null;
-
+		
 		JsonElement e = obj.get(key);
 		if (e instanceof JsonPrimitive prim) {
 			return (prim.isNumber()) ? prim.getAsInt() : null;
@@ -211,10 +204,10 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 			return null;
 		}
 	}
-
+	
 	private @Nullable Boolean getBoolean(@Nullable JsonObject obj, String key) {
 		if (obj == null) return null;
-
+		
 		JsonElement e = obj.get(key);
 		if (e instanceof JsonPrimitive prim) {
 			return (prim.isBoolean()) ? prim.getAsBoolean() : null;
@@ -222,10 +215,10 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 			return null;
 		}
 	}
-
+	
 	private @Nullable JsonObject getObject(@Nullable JsonObject obj, String key) {
 		if (obj == null) return null;
-
+		
 		JsonElement e = obj.get(key);
 		if (e instanceof JsonObject o) {
 			return o;

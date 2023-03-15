@@ -14,7 +14,7 @@ import net.minecraft.util.registry.Registry;
 public class TableSawRecipeSync {
 	/**
 	 * Sync all current TableSaw recipes to a client, clearing any existing recipes they had.
-	 * 
+	 *
 	 * <p>Note: This is a very heavy operation network-wise, and will kick the player out of the tablesaw gui if they're
 	 * in one. Do not do this if you don't have to.
 	 * @param server The server to send the packets from.
@@ -47,7 +47,7 @@ public class TableSawRecipeSync {
 		}
 		ServerPlayNetworking.send(player, TableSaw.RECIPE_CHANNEL, lastBuf);
 	}
-	
+
 	/** Writes a recipe to a PacketByteBuf */
 	private static void writeRecipe(TableSawRecipe recipe, PacketByteBuf buf) {
 		String inputId = Registry.ITEM.getId(recipe.getInput()).toString();

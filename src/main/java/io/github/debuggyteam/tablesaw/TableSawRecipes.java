@@ -18,35 +18,35 @@ import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 
 public class TableSawRecipes {
-	
+
 	@Environment(EnvType.CLIENT)
 	private static final TableSawRecipes CLIENT_INSTANCE = new TableSawRecipes();
 	private static final TableSawRecipes SERVER_INSTANCE = new TableSawRecipes();
-	
+
 	@Environment(EnvType.CLIENT)
 	public static TableSawRecipes clientInstance() {
 		return CLIENT_INSTANCE;
 	}
-	
+
 	public static TableSawRecipes serverInstance() {
 		return SERVER_INSTANCE;
 	}
-	
+
 	protected Multimap<Item, TableSawRecipe> recipes = HashMultimap.create();
-	
+
 	public List<TableSawRecipe> getRecipes(ItemConvertible item) {
-		
+
 		return ImmutableList.copyOf(recipes.get(item.asItem()));
 	}
-	
+
 	public void registerRecipe(ItemConvertible input, ItemConvertible result) {
 		registerRecipe(new TableSawRecipe(input.asItem(), 1, new ItemStack(result)));
 	}
-	
+
 	public void registerRecipe(ItemConvertible input, int quantity, ItemStack result) {
 		registerRecipe(new TableSawRecipe(input.asItem(), quantity, result));
 	}
-	
+
 	public void registerRecipe(TableSawRecipe recipe) {
 		//Remove any recipes with the same output item
 		List<TableSawRecipe> toRemove = new ArrayList<>();
@@ -58,16 +58,16 @@ public class TableSawRecipes {
 		for(TableSawRecipe r : toRemove) {
 			recipes.remove(recipe.getInput(), r);
 		}
-		
+
 		//Add in the new recipe
 		recipes.put(recipe.getInput(), recipe);
 	}
-	
-	
+
+
 	public void clearAllRecipes() {
 		recipes.clear();
 	}
-	
+
 	@Deprecated
 	public void copyFrom(TableSawRecipes other) {
 		recipes.clear();
@@ -75,7 +75,7 @@ public class TableSawRecipes {
 			recipes.put(entry.getKey(), entry.getValue());
 		}
 	}
-	
+
 	public Deque<TableSawRecipe> queueAll() {
 		ArrayDeque<TableSawRecipe> result = new ArrayDeque<>();
 		result.addAll(recipes.values());

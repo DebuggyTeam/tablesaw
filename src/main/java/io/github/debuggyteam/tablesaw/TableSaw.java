@@ -23,58 +23,57 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TableSaw implements ModInitializer {
-    public static final String MODID = "tablesaw";
-    public static final Identifier TABLESAW_CHANNEL = identifier("tablesaw");  // S <-> C
-    public static final Identifier RECIPE_CHANNEL = identifier("recipe_sync"); // S -> C only
-    public static final int MESSAGE_ENGAGE_TABLESAW = 0x120000;
+	public static final String MODID = "tablesaw";
+	public static final Identifier TABLESAW_CHANNEL = identifier("tablesaw");  // S <-> C
+	public static final Identifier RECIPE_CHANNEL = identifier("recipe_sync"); // S -> C only
+	public static final int MESSAGE_ENGAGE_TABLESAW = 0x120000;
 
-    public static final Logger LOGGER = LoggerFactory.getLogger("TableSaw");
+	public static final Logger LOGGER = LoggerFactory.getLogger("TableSaw");
 
-    public static final TableSawBlock TABLESAW = new TableSawBlock(QuiltBlockSettings.of(Material.WOOD).nonOpaque());
+	public static final TableSawBlock TABLESAW = new TableSawBlock(QuiltBlockSettings.of(Material.WOOD).nonOpaque());
 
-    /** Register a sound for the tablesaw to use */
-    public static final Identifier TABLESAW_SFX = new Identifier(MODID, "tablesaw_sfx");
-    public static final SoundEvent TABLESAW_SOUND_EVENT = new SoundEvent(TABLESAW_SFX);
+	/** Register a sound for the tablesaw to use */
+	public static final Identifier TABLESAW_SFX = new Identifier(MODID, "tablesaw_sfx");
+	public static final SoundEvent TABLESAW_SOUND_EVENT = new SoundEvent(TABLESAW_SFX);
 
-    public static final ScreenHandlerType<TableSawScreenHandler> TABLESAW_SCREEN_HANDLER = new ScreenHandlerType<>((syncId, inventory) -> new TableSawScreenHandler(syncId, inventory, ScreenHandlerContext.EMPTY));
+	public static final ScreenHandlerType<TableSawScreenHandler> TABLESAW_SCREEN_HANDLER = new ScreenHandlerType<>((syncId, inventory) -> new TableSawScreenHandler(syncId, inventory, ScreenHandlerContext.EMPTY));
 
-    /** Creates an identifier with this mod as the namespace */
-    public static Identifier identifier(String path) {
-    	return new Identifier(MODID, path);
-    }
-    
-    @Override
-    public void onInitialize(ModContainer mod) {
-        LOGGER.info("Hello Quilt world from {}!", mod.metadata().name());
+	/** Creates an identifier with this mod as the namespace */
+	public static Identifier identifier(String path) {
+		return new Identifier(MODID, path);
+	}
 
-        Registry.register(Registry.SCREEN_HANDLER, new Identifier(MODID, "tablesaw"), TABLESAW_SCREEN_HANDLER);
-        
-        Registry.register(Registry.BLOCK, new Identifier(MODID, "tablesaw"), TABLESAW);
-        Registry.register(Registry.ITEM, new Identifier(MODID, "tablesaw"),
-                new BlockItem(TABLESAW, new QuiltItemSettings().group(ItemGroup.DECORATIONS)));
+	@Override
+	public void onInitialize(ModContainer mod) {
+		LOGGER.info("Hello Quilt world from {}!", mod.metadata().name());
 
-        Registry.register(Registry.SOUND_EVENT, TableSaw.TABLESAW_SFX, TABLESAW_SOUND_EVENT);
-        
-        // Receives serverside notice that the tablesaw craft button is clicked
-        ServerPlayNetworking.registerGlobalReceiver(TABLESAW_CHANNEL, new TableSawServerReceiver());
-        
-        // Updates recipes on the server when data is loaded or reloaded
-        ResourceLoader.get(ResourceType.SERVER_DATA).registerReloader(new TableSawResourceLoader());
-        
-        // Syncs recipes for all connected players when a live reload happens
-        ResourceLoaderEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, error) -> {
-            // Server will be null here if this is the first reload as the game is starting. In that case there are no players to notify.
-            if (server == null) return;
-            for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-                TableSawRecipeSync.syncFromServer(server, player);
-            }
-        });
-        
-        // Syncs recipes when a player connects
-        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-            TableSawRecipeSync.syncFromServer(server, handler.getPlayer());
-        });
-    }
-    
-    
+		Registry.register(Registry.SCREEN_HANDLER, new Identifier(MODID, "tablesaw"), TABLESAW_SCREEN_HANDLER);
+
+		Registry.register(Registry.BLOCK, new Identifier(MODID, "tablesaw"), TABLESAW);
+		Registry.register(Registry.ITEM, new Identifier(MODID, "tablesaw"),
+				new BlockItem(TABLESAW, new QuiltItemSettings().group(ItemGroup.DECORATIONS)));
+
+		Registry.register(Registry.SOUND_EVENT, TableSaw.TABLESAW_SFX, TABLESAW_SOUND_EVENT);
+
+		// Receives serverside notice that the tablesaw craft button is clicked
+		ServerPlayNetworking.registerGlobalReceiver(TABLESAW_CHANNEL, new TableSawServerReceiver());
+
+		// Updates recipes on the server when data is loaded or reloaded
+		ResourceLoader.get(ResourceType.SERVER_DATA).registerReloader(new TableSawResourceLoader());
+
+		// Syncs recipes for all connected players when a live reload happens
+		ResourceLoaderEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, error) -> {
+			// Server will be null here if this is the first reload as the game is starting. In that case there are no players to notify.
+			if (server == null) return;
+			for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+				TableSawRecipeSync.syncFromServer(server, player);
+			}
+		});
+
+		// Syncs recipes when a player connects
+		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+			TableSawRecipeSync.syncFromServer(server, handler.getPlayer());
+		});
+	}
+
 }

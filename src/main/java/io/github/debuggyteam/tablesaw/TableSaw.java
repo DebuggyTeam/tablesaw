@@ -2,10 +2,7 @@ package io.github.debuggyteam.tablesaw;
 
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.Material;
-import net.minecraft.client.sound.Sound;
-import net.minecraft.client.sound.SoundEngine;
-import net.minecraft.client.sound.SoundEntry;
-import net.minecraft.client.sound.SoundManager;
+import net.minecraft.feature_flags.FeatureFlagBitSet;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -13,8 +10,6 @@ import net.minecraft.resource.ResourceType;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
@@ -40,8 +35,7 @@ public class TableSaw implements ModInitializer {
 	public static final Identifier TABLESAW_SFX = new Identifier(MODID, "tablesaw_sfx");
 	//public static final SoundEvent TABLESAW_SOUND_EVENT = new 
 	
-	public static final ScreenHandlerType<TableSawScreenHandler> TABLESAW_SCREEN_HANDLER = new Screen
-	// new ScreenHandlerType<>((syncId, inventory) -> new TableSawScreenHandler(syncId, inventory, ScreenHandlerContext.EMPTY));
+	public static final ScreenHandlerType<TableSawScreenHandler> TABLESAW_SCREEN_HANDLER = new ScreenHandlerType<>((syncId, inventory) -> new TableSawScreenHandler(syncId, inventory, ScreenHandlerContext.EMPTY), FeatureFlagBitSet.empty());
 	
 	/** Creates an identifier with this mod as the namespace */
 	public static Identifier identifier(String path) {

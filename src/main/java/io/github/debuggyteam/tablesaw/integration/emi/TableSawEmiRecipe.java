@@ -10,8 +10,8 @@ import io.github.debuggyteam.tablesaw.TableSaw;
 import io.github.debuggyteam.tablesaw.api.TableSawRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class TableSawEmiRecipe implements EmiRecipe {
 		id = new Identifier(
 				TableSaw.MODID,
 				"/" +
-						mangle(Registry.ITEM.getId(inputItemStack.getItem())) +
+						mangle(Registries.ITEM.getId(inputItemStack.getItem())) +
 						"_" +
 						inputItemStack.getCount() +
 						"__" +

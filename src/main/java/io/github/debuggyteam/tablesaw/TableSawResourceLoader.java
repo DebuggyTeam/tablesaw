@@ -10,10 +10,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
+import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.NotNull;
 import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.resource.loader.api.reloader.SimpleSynchronousResourceReloader;
@@ -73,25 +73,25 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 				} else if (jsonRoot instanceof JsonObject rootObject) {
 					JsonArray recipesArray = getArray(rootObject, "recipes");
 					if (recipesArray != null) {
-
+						
 						Boolean replace = getBoolean(rootObject, "replace");
 						if (replace == null) replace = Boolean.FALSE;
-
+						
 						List<TableSawRecipe> results = new ArrayList<>();
-
+						
 						for(JsonElement recipeElem : recipesArray) {
 							if (recipeElem instanceof JsonObject recipeObject) {
 								TableSawRecipe recipe = parseRecipe(recipeObject);
 								if (recipe != null) results.add(recipe);
 							}
 						}
-
+						
 						if (replace) {
 							for(TableSawRecipe recipe : results) {
 								TableSawRecipes.serverInstance().clearRecipesFor(recipe.getInput());
 							}
 						}
-
+						
 						for(TableSawRecipe recipe : results) TableSawRecipes.serverInstance().registerRecipe(recipe);
 					} else {
 						//System.out.println("Parsing single recipe");
@@ -132,7 +132,7 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 			count = 1;
 		}
 		
-		Item inputItem = Registry.ITEM.get(new Identifier(itemId));
+		Item inputItem = Registries.ITEM.get(new Identifier(itemId));
 		if (inputItem == Items.AIR) return null;
 		
 		ItemStack resultItemStack = ItemStack.EMPTY;
@@ -141,7 +141,7 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 		if (resultObject != null) {
 			String resultId = getString(resultObject, "item");
 			if (resultId == null) return null;
-			Item resultItem = Registry.ITEM.get(new Identifier(resultId));
+			Item resultItem = Registries.ITEM.get(new Identifier(resultId));
 			if (resultItem == Items.AIR) return null;
 			
 			Integer resultCount = getInteger(resultObject, "count");
@@ -162,7 +162,7 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 		} else {
 			String resultId = getString(obj, "result");
 			if (resultId == null) return null;
-			Item resultItem = Registry.ITEM.get(new Identifier(resultId));
+			Item resultItem = Registries.ITEM.get(new Identifier(resultId));
 			if (resultItem == Items.AIR) return null;
 			
 			resultItemStack = new ItemStack(resultItem);

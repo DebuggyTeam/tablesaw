@@ -10,9 +10,9 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.loader.api.config.QuiltConfig;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
@@ -62,7 +62,7 @@ public class TableSawClient implements ClientModInitializer {
 			
 			for(int i = 0; i < count; i++) {
 				String id = buf.readString();
-				Item inputItem = Registry.ITEM.get(new Identifier(id));
+				Item inputItem = Registries.ITEM.get(new Identifier(id));
 				int quantity = buf.readVarInt();
 				ItemStack result = buf.readItemStack();
 				

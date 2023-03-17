@@ -2,6 +2,10 @@ package io.github.debuggyteam.tablesaw;
 
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.Material;
+import net.minecraft.client.sound.Sound;
+import net.minecraft.client.sound.SoundEngine;
+import net.minecraft.client.sound.SoundEntry;
+import net.minecraft.client.sound.SoundManager;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -10,6 +14,7 @@ import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
@@ -33,9 +38,10 @@ public class TableSaw implements ModInitializer {
 	
 	/** Register a sound for the tablesaw to use */
 	public static final Identifier TABLESAW_SFX = new Identifier(MODID, "tablesaw_sfx");
-	public static final SoundEvent TABLESAW_SOUND_EVENT = new SoundEvent(TABLESAW_SFX);
+	//public static final SoundEvent TABLESAW_SOUND_EVENT = new 
 	
-	public static final ScreenHandlerType<TableSawScreenHandler> TABLESAW_SCREEN_HANDLER = new ScreenHandlerType<>((syncId, inventory) -> new TableSawScreenHandler(syncId, inventory, ScreenHandlerContext.EMPTY));
+	public static final ScreenHandlerType<TableSawScreenHandler> TABLESAW_SCREEN_HANDLER = new Screen
+	// new ScreenHandlerType<>((syncId, inventory) -> new TableSawScreenHandler(syncId, inventory, ScreenHandlerContext.EMPTY));
 	
 	/** Creates an identifier with this mod as the namespace */
 	public static Identifier identifier(String path) {
@@ -46,13 +52,13 @@ public class TableSaw implements ModInitializer {
 	public void onInitialize(ModContainer mod) {
 		LOGGER.info("Hello Quilt world from {}!", mod.metadata().name());
 		
-		Registry.register(Registries.SCREEN_HANDLER, new Identifier(MODID, "tablesaw"), TABLESAW_SCREEN_HANDLER);
+		Registry.register(Registries.SCREEN_HANDLER_TYPE, new Identifier(MODID, "tablesaw"), TABLESAW_SCREEN_HANDLER);
 		
 		Registry.register(Registries.BLOCK, new Identifier(MODID, "tablesaw"), TABLESAW);
 		Registry.register(Registries.ITEM, new Identifier(MODID, "tablesaw");
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL_BLOCKS).register(entries -> entries.addItem(TABLESAW));
 		
-		Registry.register(Registries.SOUND_EVENT, TableSaw.TABLESAW_SFX, TABLESAW_SOUND_EVENT);
+		//Registry.register(Registries.SOUND_EVENT, TableSaw.TABLESAW_SFX, TABLESAW_SOUND_EVENT);
 		
 		// Receives serverside notice that the tablesaw craft button is clicked
 		ServerPlayNetworking.registerGlobalReceiver(TABLESAW_CHANNEL, new TableSawServerReceiver());

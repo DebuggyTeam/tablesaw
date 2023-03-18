@@ -3,6 +3,7 @@ package io.github.debuggyteam.tablesaw;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.Material;
 import net.minecraft.feature_flags.FeatureFlagBitSet;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -14,6 +15,7 @@ import net.minecraft.util.Identifier;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.quiltmc.qsl.block.extensions.api.QuiltBlockSettings;
+import org.quiltmc.qsl.item.setting.api.QuiltItemSettings;
 import org.quiltmc.qsl.networking.api.ServerPlayConnectionEvents;
 import org.quiltmc.qsl.networking.api.ServerPlayNetworking;
 import org.quiltmc.qsl.resource.loader.api.ResourceLoader;
@@ -49,6 +51,8 @@ public class TableSaw implements ModInitializer {
 		Registry.register(Registries.SCREEN_HANDLER_TYPE, new Identifier(MODID, "tablesaw"), TABLESAW_SCREEN_HANDLER);
 		
 		Registry.register(Registries.BLOCK, new Identifier(MODID, "tablesaw"), TABLESAW);
+		Registry.register(Registries.ITEM, new Identifier(MODID, "tablesaw"), 
+				new BlockItem(TABLESAW, new QuiltItemSettings()));
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL_BLOCKS).register(entries -> entries.addItem(TABLESAW));
 		
 		//Registry.register(Registries.SOUND_EVENT, TableSaw.TABLESAW_SFX, TABLESAW_SOUND_EVENT);

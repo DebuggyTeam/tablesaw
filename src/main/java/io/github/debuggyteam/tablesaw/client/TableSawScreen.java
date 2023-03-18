@@ -121,7 +121,7 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 		this.drawTexture(matrices, x + SCROLLBAR_X, y + SCROLLBAR_Y + scrollBarOffset, scrollThumbImageX, 0, SCROLLBAR_THUMB_WIDTH, SCROLLBAR_THUMB_HEIGHT);
 		
 		this.renderRecipeBackground(matrices, mouseX, mouseY, this.x + RECIPE_GRID_X, this.y + RECIPE_GRID_Y, this.scrollOffset);
-		this.renderRecipeIcons(matrices,  + RECIPE_GRID_X, y + RECIPE_GRID_Y, this.scrollOffset);
+		this.renderRecipeIcons(matrices, x + RECIPE_GRID_X, y + RECIPE_GRID_Y, this.scrollOffset);
 	}
 	
 	public void onContentsChanged() {

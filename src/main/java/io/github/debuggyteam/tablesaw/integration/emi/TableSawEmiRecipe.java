@@ -1,3 +1,4 @@
+/*
 package io.github.debuggyteam.tablesaw.integration.emi;
 
 import dev.emi.emi.api.recipe.EmiRecipe;
@@ -80,3 +81,5 @@ public class TableSawEmiRecipe implements EmiRecipe {
 		return id.getNamespace() + "_" + id.getPath();
 	}
 }
+
+ */

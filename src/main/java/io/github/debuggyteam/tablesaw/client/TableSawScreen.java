@@ -1,25 +1,17 @@
 package io.github.debuggyteam.tablesaw.client;
 
-import java.util.List;
-import java.util.Random;
-
-import net.minecraft.client.gui.widget.ButtonListWidget;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.sound.SoundManager;
-import org.quiltmc.qsl.networking.api.PacketByteBufs;
-import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
-
 import com.mojang.blaze3d.systems.RenderSystem;
-
 import io.github.debuggyteam.tablesaw.TableSaw;
 import io.github.debuggyteam.tablesaw.TableSawRecipes;
 import io.github.debuggyteam.tablesaw.TableSawScreenHandler;
 import io.github.debuggyteam.tablesaw.api.TableSawRecipe;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.sound.PositionedSoundInstance;
+import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -29,6 +21,10 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+import org.quiltmc.qsl.networking.api.PacketByteBufs;
+import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
+
+import java.util.List;
 
 public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	private static final Identifier TEXTURE = new Identifier("minecraft:textures/gui/container/stonecutter.png");
@@ -86,11 +82,13 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 				
 				ClientPlayNetworking.send(TableSaw.TABLESAW_CHANNEL, buf);
 				
+				/*
 				if (this.handler.getSlot(0) != null) {
 					Random r = new Random();
 					float randomPitch = 0.85f + r.nextFloat() * (1.15f - 0.85f);
 					MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(TableSaw.TABLESAW_SOUND_EVENT, randomPitch));
 				}
+				 */
 			}
 		};
 		
@@ -123,7 +121,7 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 		this.drawTexture(matrices, x + SCROLLBAR_X, y + SCROLLBAR_Y + scrollBarOffset, scrollThumbImageX, 0, SCROLLBAR_THUMB_WIDTH, SCROLLBAR_THUMB_HEIGHT);
 		
 		this.renderRecipeBackground(matrices, mouseX, mouseY, this.x + RECIPE_GRID_X, this.y + RECIPE_GRID_Y, this.scrollOffset);
-		this.renderRecipeIcons(x + RECIPE_GRID_X, y + RECIPE_GRID_Y, this.scrollOffset);
+		this.renderRecipeIcons(matrices,  + RECIPE_GRID_X, y + RECIPE_GRID_Y, this.scrollOffset);
 	}
 	
 	public void onContentsChanged() {
@@ -237,7 +235,7 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 		}
 	}
 	
-	private void renderRecipeIcons(int x, int y, int scrollOffset) {
+	private void renderRecipeIcons(MatrixStack matrices, int x, int y, int scrollOffset) {
 		List<TableSawRecipe> list = getClientsideRecipes();
 		if (list.size() == 0) return;
 		
@@ -248,7 +246,9 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 			for(int xi = 0; xi < 4; xi++) {
 				TableSawRecipe recipe = list.get(curSlot);
 				ItemStack stack = list.get(curSlot).getResult();
-				this.client.getItemRenderer().renderInGuiWithOverrides(stack, x + (xi * RECIPE_SLOT_WIDTH), y + (yi * RECIPE_SLOT_HEIGHT) + 2);
+				this.client.getItemRenderer().method_4023(matrices, stack, x + (xi * RECIPE_SLOT_WIDTH), y + (yi * RECIPE_SLOT_HEIGHT) + 2);
+				
+				//this.client.getItemRenderer().renderInGuiWithOverrides(stack, x + (xi * RECIPE_SLOT_WIDTH), y + (yi * RECIPE_SLOT_HEIGHT) + 2);
 				
 				String label = switch( TableSawClient.config.iconRatios ) {
 					case NONE -> "";
@@ -257,7 +257,8 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 					case OUTPUT_COUNT -> null; //(recipe.getResult().getCount() < 2) ? null : Integer.toString(recipe.getResult().getCount());
 				};
 				
-				this.itemRenderer.renderGuiItemOverlay(this.textRenderer, stack, x + (xi * RECIPE_SLOT_WIDTH), y + (yi * RECIPE_SLOT_HEIGHT) + 2, label);
+				this.itemRenderer.method_4022(matrices, this.textRenderer, stack, x + (xi * RECIPE_SLOT_WIDTH), y + (yi * RECIPE_SLOT_HEIGHT) + 2, label);
+				//this.itemRenderer.(this.textRenderer, stack, x + (xi * RECIPE_SLOT_WIDTH), y + (yi * RECIPE_SLOT_HEIGHT) + 2, label);
 				
 				curSlot++;
 				if (curSlot >= list.size()) break loop;

@@ -21,8 +21,8 @@
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
 			"init": "io.github.debuggyteam.tablesaw.TableSaw",
-			"client_init": "io.github.debuggyteam.tablesaw.client.TableSawClient",
-			"emi": "io.github.debuggyteam.tablesaw.integration.emi.TableSawEmiIntegration"
+			"client_init": "io.github.debuggyteam.tablesaw.client.TableSawClient"
+			
 		},
 		"depends": [
 			{

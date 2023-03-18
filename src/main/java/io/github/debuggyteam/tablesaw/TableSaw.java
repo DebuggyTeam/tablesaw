@@ -49,7 +49,6 @@ public class TableSaw implements ModInitializer {
 		Registry.register(Registries.SCREEN_HANDLER_TYPE, new Identifier(MODID, "tablesaw"), TABLESAW_SCREEN_HANDLER);
 		
 		Registry.register(Registries.BLOCK, new Identifier(MODID, "tablesaw"), TABLESAW);
-		Registry.register(Registries.ITEM, new Identifier(MODID, "tablesaw");
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL_BLOCKS).register(entries -> entries.addItem(TABLESAW));
 		
 		//Registry.register(Registries.SOUND_EVENT, TableSaw.TABLESAW_SFX, TABLESAW_SOUND_EVENT);

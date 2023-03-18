@@ -1,3 +1,4 @@
+/*
 package io.github.debuggyteam.tablesaw.integration.emi;
 
 import dev.emi.emi.api.EmiPlugin;
@@ -23,3 +24,5 @@ public class TableSawEmiIntegration implements EmiPlugin {
 		}
 	}
 }
+
+ */

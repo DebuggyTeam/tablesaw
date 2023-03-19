@@ -11,6 +11,7 @@ import net.minecraft.resource.ResourceType;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
@@ -35,7 +36,8 @@ public class TableSaw implements ModInitializer {
 	
 	/** Register a sound for the tablesaw to use */
 	public static final Identifier TABLESAW_SFX = new Identifier(MODID, "tablesaw_sfx");
-	//public static final SoundEvent TABLESAW_SOUND_EVENT = new 
+	public static final SoundEvent TABLESAW_SOUND_EVENT = SoundEvent.createFixedRangeEvent(TABLESAW_SFX, 5.0f);
+	
 	
 	public static final ScreenHandlerType<TableSawScreenHandler> TABLESAW_SCREEN_HANDLER = new ScreenHandlerType<>((syncId, inventory) -> new TableSawScreenHandler(syncId, inventory, ScreenHandlerContext.EMPTY), FeatureFlagBitSet.empty());
 	
@@ -55,7 +57,7 @@ public class TableSaw implements ModInitializer {
 				new BlockItem(TABLESAW, new QuiltItemSettings()));
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL_BLOCKS).register(entries -> entries.addItem(TABLESAW));
 		
-		//Registry.register(Registries.SOUND_EVENT, TableSaw.TABLESAW_SFX, TABLESAW_SOUND_EVENT);
+		Registry.register(Registries.SOUND_EVENT, TableSaw.TABLESAW_SFX, TABLESAW_SOUND_EVENT);
 		
 		// Receives serverside notice that the tablesaw craft button is clicked
 		ServerPlayNetworking.registerGlobalReceiver(TABLESAW_CHANNEL, new TableSawServerReceiver());

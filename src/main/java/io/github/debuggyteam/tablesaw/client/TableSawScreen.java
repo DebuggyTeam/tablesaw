@@ -25,6 +25,7 @@ import org.quiltmc.qsl.networking.api.PacketByteBufs;
 import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 
 import java.util.List;
+import java.util.Random;
 
 public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 	private static final Identifier TEXTURE = new Identifier("minecraft:textures/gui/container/stonecutter.png");
@@ -82,13 +83,11 @@ public class TableSawScreen extends HandledScreen<TableSawScreenHandler> {
 				
 				ClientPlayNetworking.send(TableSaw.TABLESAW_CHANNEL, buf);
 				
-				/*
 				if (this.handler.getSlot(0) != null) {
 					Random r = new Random();
 					float randomPitch = 0.85f + r.nextFloat() * (1.15f - 0.85f);
 					MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(TableSaw.TABLESAW_SOUND_EVENT, randomPitch));
 				}
-				 */
 			}
 		};
 		

@@ -1,7 +1,5 @@
 package io.github.debuggyteam.tablesaw;
 
-import java.util.List;
-
 import io.github.debuggyteam.tablesaw.api.TableSawRecipe;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -13,6 +11,8 @@ import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class TableSawScreenHandler extends ScreenHandler {
 	public static final int INPUT_SLOT = 0;
@@ -44,7 +44,7 @@ public class TableSawScreenHandler extends ScreenHandler {
 		
 		public boolean canInsert(ItemStack stack) { return false; };
 	};
-
+	
 	public TableSawScreenHandler(int syncId, PlayerInventory inventory, ScreenHandlerContext context) {
 		super(TableSaw.TABLESAW_SCREEN_HANDLER, syncId);
 		this.context = context;
@@ -53,10 +53,10 @@ public class TableSawScreenHandler extends ScreenHandler {
 			this.pos = pos;
 		});
 		
-		//this.inputSlot = 
-				this.addSlot(new Slot(this.input, 0, 20, 33));
-		//this.outputSlot = 
-				this.addSlot(new Slot(this.output, 0, 143, 33));
+		//this.inputSlot =
+		this.addSlot(new Slot(this.input, 0, 20, 33));
+		//this.outputSlot =
+		this.addSlot(new Slot(this.output, 0, 143, 33));
 		
 		int inventoryWidth = 9;
 		for(int yi = 0; yi < 3; ++yi) {
@@ -64,12 +64,12 @@ public class TableSawScreenHandler extends ScreenHandler {
 				this.addSlot(new Slot(inventory, xi + yi * inventoryWidth + inventoryWidth, 8 + xi * 18, 84 + yi * 18));
 			}
 		}
-
+		
 		for(int xi = 0; xi < inventoryWidth; xi++) {
 			this.addSlot(new Slot(inventory, xi, 8 + xi * 18, 142));
 		}
 	}
-
+	
 	@Override
 	public boolean canUse(PlayerEntity player) {
 		if (world != null && pos != null) {
@@ -90,7 +90,7 @@ public class TableSawScreenHandler extends ScreenHandler {
 		super.onContentChanged(inventory);
 		listenerScreen.run();
 	}
-
+	
 	@Override
 	public ItemStack quickTransfer(PlayerEntity player, int fromIndex) {
 		ItemStack result = ItemStack.EMPTY;
@@ -172,17 +172,17 @@ public class TableSawScreenHandler extends ScreenHandler {
 		
 		return result;
 	}
-
+	
 	@Override
 	public void close(PlayerEntity player) {
 		super.close(player);
 		this.context.run((world, pos) -> this.dropInventory(player, this.input));
 		this.context.run((world, pos) -> this.dropInventory(player, this.output));
 	}
-
+	
 	public void tryCraft(ItemStack stack, boolean multiCraft) {
 		List<TableSawRecipe> recipes = TableSawRecipes.serverInstance().getRecipes(this.input.getStack(0).getItem());
-		for(TableSawRecipe recipe : recipes) {
+		for (TableSawRecipe recipe : recipes) {
 			if (ItemStack.areEqual(recipe.getResult(), stack)) {
 				
 				/* This is a complex interlocking series of steps to verify the input count, that the
@@ -205,7 +205,7 @@ public class TableSawScreenHandler extends ScreenHandler {
 				
 				int toCraft = (multiCraft) ? Math.min(availableCraftsFromSource, destinationCraftableQuantity) : 1;
 				
-				for(int i=0; i<toCraft; i++) {
+				for (int i = 0; i < toCraft; i++) {
 					input.removeStack(0, recipe.getQuantity());
 					ItemStack outputStack = this.output.getStack(0);
 					if (outputStack.isEmpty()) {
@@ -226,5 +226,4 @@ public class TableSawScreenHandler extends ScreenHandler {
 			}
 		}
 	}
-	
 }

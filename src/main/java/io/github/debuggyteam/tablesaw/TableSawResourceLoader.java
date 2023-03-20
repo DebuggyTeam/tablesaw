@@ -1,24 +1,11 @@
 package io.github.debuggyteam.tablesaw;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Nullable;
-
-import org.jetbrains.annotations.NotNull;
-import org.quiltmc.loader.api.QuiltLoader;
-import org.quiltmc.qsl.resource.loader.api.reloader.SimpleSynchronousResourceReloader;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-
 import io.github.debuggyteam.tablesaw.api.TableSawAPI;
 import io.github.debuggyteam.tablesaw.api.TableSawCompat;
 import io.github.debuggyteam.tablesaw.api.TableSawRecipe;
@@ -27,44 +14,54 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
+import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import org.jetbrains.annotations.NotNull;
+import org.quiltmc.loader.api.QuiltLoader;
+import org.quiltmc.qsl.resource.loader.api.reloader.SimpleSynchronousResourceReloader;
+
+import javax.annotation.Nullable;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class TableSawResourceLoader implements SimpleSynchronousResourceReloader {
 	public static final Identifier ID = TableSaw.identifier("recipe_loader");
-	
+
 	@Override
 	public @NotNull Identifier getQuiltId() {
 		return ID;
 	}
-	
+
 	@Override
 	public void reload(ResourceManager manager) {
 		//We start fresh at every datapack reload
 		TableSawRecipes.serverInstance().clearAllRecipes();
-		
+
 		//TODO: Heuristics
-		
+
 		//Create the API implementation
 		TableSawAPI api = new TableSawAPI() {
 			@Override
 			public void registerTableSawRecipe(TableSawRecipe recipe) {
 				TableSawRecipes.serverInstance().registerRecipe(recipe);
-				
+
 			}
 		};
-		
+
 		//Call all the API consumers
 		for(TableSawCompat compat : QuiltLoader.getEntrypoints(TableSaw.MODID, TableSawCompat.class)) {
 			compat.run(api);
 		}
-		
+
 		//Load data recipes, including our builtins
 		Map<Identifier, Resource> tableSawRecipes = manager.findResources("custom_recipes/tablesaw", (id)->id.getPath().endsWith(".json"));
 		for(Map.Entry<Identifier, Resource> resource : tableSawRecipes.entrySet()) {
-			
+
 			try {
 				String recipeString = new String(resource.getValue().open().readAllBytes(), StandardCharsets.UTF_8);
 				JsonElement jsonRoot = JsonParser.parseString(recipeString);
@@ -139,7 +136,7 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 			count = 1;
 		}
 		
-		Item inputItem = Registry.ITEM.get(new Identifier(itemId));
+		Item inputItem = Registries.ITEM.get(new Identifier(itemId));
 		if (inputItem == Items.AIR) return null;
 		
 		ItemStack resultItemStack = ItemStack.EMPTY;
@@ -148,7 +145,7 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 		if (resultObject != null) {
 			String resultId = getString(resultObject, "item");
 			if (resultId == null) return null;
-			Item resultItem = Registry.ITEM.get(new Identifier(resultId));
+			Item resultItem = Registries.ITEM.get(new Identifier(resultId));
 			if (resultItem == Items.AIR) return null;
 			
 			Integer resultCount = getInteger(resultObject, "count");
@@ -169,7 +166,7 @@ public class TableSawResourceLoader implements SimpleSynchronousResourceReloader
 		} else {
 			String resultId = getString(obj, "result");
 			if (resultId == null) return null;
-			Item resultItem = Registry.ITEM.get(new Identifier(resultId));
+			Item resultItem = Registries.ITEM.get(new Identifier(resultId));
 			if (resultItem == Items.AIR) return null;
 			
 			resultItemStack = new ItemStack(resultItem);

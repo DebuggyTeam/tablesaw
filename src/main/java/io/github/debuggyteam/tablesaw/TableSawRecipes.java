@@ -1,15 +1,8 @@
 package io.github.debuggyteam.tablesaw;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
-import java.util.Map;
-
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
-
 import io.github.debuggyteam.tablesaw.api.TableSawRecipe;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -17,8 +10,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
+import java.util.Map;
+
 public class TableSawRecipes {
-	
+
 	@Environment(EnvType.CLIENT)
 	private static final TableSawRecipes CLIENT_INSTANCE = new TableSawRecipes();
 	private static final TableSawRecipes SERVER_INSTANCE = new TableSawRecipes();
@@ -35,7 +34,6 @@ public class TableSawRecipes {
 	protected Multimap<Item, TableSawRecipe> recipes = HashMultimap.create();
 	
 	public List<TableSawRecipe> getRecipes(ItemConvertible item) {
-		
 		return ImmutableList.copyOf(recipes.get(item.asItem()));
 	}
 	
@@ -63,7 +61,6 @@ public class TableSawRecipes {
 		recipes.put(recipe.getInput(), recipe);
 	}
 	
-	
 	public void clearAllRecipes() {
 		recipes.clear();
 	}
@@ -81,7 +78,7 @@ public class TableSawRecipes {
 		result.addAll(recipes.values());
 		return result;
 	}
-
+	
 	public void clearRecipesFor(ItemConvertible input) {
 		recipes.removeAll(input.asItem());
 	}

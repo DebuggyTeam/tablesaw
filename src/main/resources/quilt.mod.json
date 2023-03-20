@@ -9,7 +9,11 @@
 			"description": "A mod that adds a sawmill for cutting wooden blocks.",
 			"contributors": {
 				"Debuggy Team": "Owner",
-				"Falkreon": "Contributor; Mod Concept"
+				"Falkreon": "Contributor; Mod Concept",
+				"Xanderstuff": "Item deletion bugfix",
+				"Octal": "Made new tablesaw textures",
+				"Flamarine": "Chinese translation",
+				"Nerjal Nosk": "French translation"
 			},
 			"contact": {
 				"homepage": "https://github.com/DebuggyTeam/tablesaw",

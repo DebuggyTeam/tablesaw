@@ -48,8 +48,6 @@ public class TableSaw implements ModInitializer {
 	
 	@Override
 	public void onInitialize(ModContainer mod) {
-		LOGGER.info("Hello Quilt world from {}!", mod.metadata().name());
-		
 		Registry.register(Registries.SCREEN_HANDLER_TYPE, new Identifier(MODID, "tablesaw"), TABLESAW_SCREEN_HANDLER);
 		
 		Registry.register(Registries.BLOCK, new Identifier(MODID, "tablesaw"), TABLESAW);

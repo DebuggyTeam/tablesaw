@@ -5,6 +5,9 @@
 ## About Tablesaw
 Tablesaw is a mod that adds a sawmill for cutting wooden blocks with. Its pretty similar to the vanilla stonecutter in function and Tablesaw will make it far easier to utilize wooden blocks.
 
+## About Ports
+The debuggy team welcomes third party ports to previous minecraft versions, but respectfully asks that you don't port to Forge or Fabric.
+
 ## How to use tablesaw as a user
 Follow the instructional gif below to learn how to use the tablesaw.
 

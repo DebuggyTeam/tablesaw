@@ -23,7 +23,7 @@ import org.quiltmc.qsl.resource.loader.api.ResourceLoaderEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-// pineapple pineapple
+// pineapple pineapple pineapple
 public class TableSaw implements ModInitializer {
 	public static final String MODID = "tablesaw";
 	public static final Identifier TABLESAW_CHANNEL = identifier("tablesaw");  // S <-> C

@@ -23,6 +23,7 @@ import org.quiltmc.qsl.resource.loader.api.ResourceLoaderEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+// pineapple pineapple
 public class TableSaw implements ModInitializer {
 	public static final String MODID = "tablesaw";
 	public static final Identifier TABLESAW_CHANNEL = identifier("tablesaw");  // S <-> C
@@ -31,7 +32,7 @@ public class TableSaw implements ModInitializer {
 	
 	public static final Logger LOGGER = LoggerFactory.getLogger("TableSaw");
 	
-	public static final TableSawBlock TABLESAW = new TableSawBlock(QuiltBlockSettings.copyOf(WOO));
+	public static final TableSawBlock TABLESAW = new TableSawBlock(QuiltBlockSettings.copyOf());
 	
 	/** Register a sound for the tablesaw to use */
 	public static final Identifier TABLESAW_SFX = new Identifier(MODID, "tablesaw_sfx");

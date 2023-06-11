@@ -1,7 +1,6 @@
 package io.github.debuggyteam.tablesaw;
 
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.block.Material;
 import net.minecraft.feature_flags.FeatureFlagBitSet;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemGroups;
@@ -32,7 +31,7 @@ public class TableSaw implements ModInitializer {
 	
 	public static final Logger LOGGER = LoggerFactory.getLogger("TableSaw");
 	
-	public static final TableSawBlock TABLESAW = new TableSawBlock(QuiltBlockSettings.of(Material.WOOD).nonOpaque());
+	public static final TableSawBlock TABLESAW = new TableSawBlock(QuiltBlockSettings.copyOf(WOO));
 	
 	/** Register a sound for the tablesaw to use */
 	public static final Identifier TABLESAW_SFX = new Identifier(MODID, "tablesaw_sfx");

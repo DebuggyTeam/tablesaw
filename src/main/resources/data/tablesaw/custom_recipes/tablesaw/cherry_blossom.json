@@ -1,0 +1,94 @@
+[
+	{
+		"input": {
+			"item": "minecraft:cherry_planks",
+			"count": 3
+		},
+		"result": {
+			"item": "minecraft:cherry_stairs",
+			"count": 2
+		}
+	},
+	{
+		"input": "minecraft:cherry_planks",
+		"result": {
+			"item": "minecraft:cherry_slab",
+			"count": 2
+		}
+	},
+	{
+		"input": {
+			"item": "minecraft:cherry_planks",
+			"count": 2
+		},
+		"result": "minecraft:cherry_door"
+	},
+	{
+		"input": {
+			"item": "minecraft:cherry_planks",
+			"count": 5
+		},
+		"result": {
+			"item": "minecraft:cherry_fence",
+			"count": 3
+		}
+	},
+	{
+		"input": {
+			"item": "minecraft:cherry_planks",
+			"count": 4
+		},
+		"result": "minecraft:cherry_fence_gate"
+	},
+	{
+		"input": "minecraft:cherry_planks",
+		"result": "minecraft:cherry_button"
+	},
+	{
+		"input": {
+			"item": "minecraft:cherry_planks",
+			"count": 2
+		},
+		"result": "minecraft:cherry_pressure_plate"
+	},
+	{
+		"input": {
+			"item": "minecraft:cherry_planks",
+			"count": 3
+		},
+		"result": "minecraft:cherry_trapdoor"
+	},
+	{
+		"input": {
+			"item": "minecraft:cherry_planks",
+			"count": 2
+		},
+		"result": "minecraft:cherry_sign"
+	},
+
+
+	{
+		"input": {
+			"item": "minecraft:cherry_planks",
+			"count": 3
+		},
+		"result": {
+			"item": "minecraft:bowl",
+			"count": 4
+		}
+	},
+	{
+		"input": {
+			"item": "minecraft:cherry_planks",
+			"count": 8
+		},
+		"result": "minecraft:chest"
+	},
+	{
+		"input": {
+			"item": "minecraft:cherry_planks",
+			"count": 5
+		},
+		"result": "minecraft:cherry_boat"
+	}
+]

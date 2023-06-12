@@ -1,11 +1,12 @@
 package io.github.debuggyteam.tablesaw.integration.emi;
-
+/*
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+*/
 import io.github.debuggyteam.tablesaw.TableSaw;
 import io.github.debuggyteam.tablesaw.api.TableSawRecipe;
 import net.minecraft.item.ItemStack;
@@ -16,7 +17,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class TableSawEmiRecipe implements EmiRecipe {
+public class TableSawEmiRecipe /*implements EmiRecipe*/ {
+	/*
 	private final Identifier id;
 	private final EmiIngredient input;
 	private final EmiStack output;
@@ -79,4 +81,5 @@ public class TableSawEmiRecipe implements EmiRecipe {
 	private String mangle(Identifier id) {
 		return id.getNamespace() + "_" + id.getPath();
 	}
+	*/
 }

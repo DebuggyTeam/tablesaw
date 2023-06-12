@@ -32,7 +32,7 @@ public class TableSaw implements ModInitializer {
 	
 	public static final Logger LOGGER = LoggerFactory.getLogger("TableSaw");
 	
-	public static final TableSawBlock TABLESAW = new TableSawBlock(QuiltBlockSettings.copyOf());
+	public static final TableSawBlock TABLESAW = new TableSawBlock(QuiltBlockSettings.create());
 	
 	/** Register a sound for the tablesaw to use */
 	public static final Identifier TABLESAW_SFX = new Identifier(MODID, "tablesaw_sfx");
@@ -64,11 +64,11 @@ public class TableSaw implements ModInitializer {
 		ResourceLoader.get(ResourceType.SERVER_DATA).registerReloader(new TableSawResourceLoader());
 		
 		// Syncs recipes for all connected players when a live reload happens
-		ResourceLoaderEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, error) -> {
+		ResourceLoaderEvents.END_DATA_PACK_RELOAD.register((context) -> {
 			// Server will be null here if this is the first reload as the game is starting. In that case there are no players to notify.
-			if (server == null) return;
-			for(ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-				TableSawRecipeSync.syncFromServer(server, player);
+			if (context.server() == null) return;
+			for(ServerPlayerEntity player : context.server().getPlayerManager().getPlayerList()) {
+				TableSawRecipeSync.syncFromServer(context.server(), player);
 			}
 		});
 		

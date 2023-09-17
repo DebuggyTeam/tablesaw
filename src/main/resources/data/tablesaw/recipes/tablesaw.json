@@ -10,10 +10,10 @@
 			"item": "minecraft:iron_ingot"
 		},
 		"F": {
-			"item": "minecraft:oak_fence"
+			"tag": "minecraft:wooden_fences"
 		},
 		"S": {
-			"item": "minecraft:oak_slab"
+			"tag": "minecraft:wooden_slabs"
 		}
 	},
 	"result": {

@@ -21,7 +21,10 @@
 				"issues": "https://github.com/DebuggyTeam/tablesaw/issues",
 				"sources": "https://github.com/DebuggyTeam/tablesaw"
 			},
-			"icon": "assets/tablesaw/icon.png"
+			"icon": {
+				"512": "assets/tablesaw/icon.png",
+				"128": "assets/tablesaw/icon128.png"
+			}
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
